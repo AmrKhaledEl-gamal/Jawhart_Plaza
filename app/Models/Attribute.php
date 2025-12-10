@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Translatable\HasTranslations;
+
+class Attribute extends Model
+{
+    use HasFactory, HasTranslations;
+
+    protected $guarded = [];
+    public $translatable = ['name'];
+
+    // السمة (زي اللون) ليها قيم كتير (أحمر، أخضر، أزرق)
+    public function values()
+    {
+        return $this->hasMany(AttributeValue::class);
+    }
+}
