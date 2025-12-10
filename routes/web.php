@@ -9,16 +9,8 @@ use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-// use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Admin\UserController;
-// use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\JobApplicationController;
-use App\Http\Controllers\Admin\JobController as AdminJobController;
-// // use App\Http\Controllers\Front\AboutController as FrontAboutController;
-use App\Http\Controllers\Admin\AboutController;
-// use App\Http\Controllers\Front\JobController;
-use App\Models\About;
 
 Route::get('/change-lang/{lang}', function ($lang) {
     session(['locale' => $lang]);
@@ -44,7 +36,20 @@ Route::get('/change-lang/{lang}', function ($lang) {
 
 
 // Admin Routes
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::middleware('guest:admin')->group(function () {
+        Route::get('/login', [\App\Http\Controllers\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+        Route::post('/login', [\App\Http\Controllers\AdminLoginController::class, 'login']);
+    });
+
+    Route::middleware('auth:admin')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard.index');
+        })->name('admin.dashboard');
+
+        Route::post('/logout', [\App\Http\Controllers\AdminLoginController::class, 'logout'])->name('admin.logout');
+    });
+
     Route::get('/', [DashboardController::class, 'index'])->name('index');
 
     // Users Routes
