@@ -40,13 +40,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'admin' => [  // <--- ده اللي هنضيفه
-            'driver' => 'session',
-            'provider' => 'admins',
-        ],
     ],
-
-
 
     /*
     |--------------------------------------------------------------------------
@@ -68,19 +62,14 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        'admins' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Admin::class,
-        ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
     ],
-
-    // 'users' => [
-    //     'driver' => 'database',
-    //     'table' => 'users',
-    // ],
-
 
     /*
     |--------------------------------------------------------------------------

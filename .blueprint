@@ -1,0 +1,16 @@
+created:
+    - app/Http/Controllers/Admin/MedicalDeviceController.php
+    - database/factories/MedicalDeviceFactory.php
+    - database/migrations/2025_09_23_035158_create_medical_devices_table.php
+    - app/Models/MedicalDevice.php
+    - tests/Feature/Http/Controllers/Admin/MedicalDeviceControllerTest.php
+    - app/Http/Requests/Admin/MedicalDeviceStoreRequest.php
+    - app/Http/Requests/Admin/MedicalDeviceUpdateRequest.php
+    - resources/views/medicalDevice/index.blade.php
+    - resources/views/medicalDevice/create.blade.php
+    - resources/views/medicalDevice/show.blade.php
+    - resources/views/medicalDevice/edit.blade.php
+updated:
+    - routes/web.php
+models:
+    MedicalDevice: { title: json, description: json, image: 'string nullable' }

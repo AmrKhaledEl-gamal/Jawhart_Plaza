@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @php
-    $title = 'Create Category';
-    $subTitle = 'Add New Category';
+    $title = 'Create Blog';
+    $subTitle = 'Add New Blog';
     $script = '
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script>
@@ -23,6 +23,10 @@
             uploadedImgContainer.classList.add("d-none");
             fileInput.value = "";
         });
+
+        ClassicEditor.create(document.querySelector("#body")).catch(error => {
+            console.error(error);
+        });
     </script>';
 @endphp
 
@@ -37,53 +41,20 @@
                                 @csrf
                                 <div class="row">
 
-                                    {{-- name_ar --}}
-                                    <div class="col-md-6 mb-20">
-                                        <label for="name_ar"
-                                            class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                            الاسم (بالعربية) <span class="text-danger-600">*</span>
-                                        </label>
-                                        <input type="text" name="name[ar]" id="name_ar"
-                                            class="form-control radius-8 @error('name.ar') is-invalid @enderror"
-                                            value="{{ old('name.ar') }}">
-                                        @error('name.ar')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-
-                                    {{-- name_en --}}
-                                    <div class="col-md-6 mb-20">
-                                        <label for="name_en"
-                                            class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                            الاسم (بالإنجليزية) <span class="text-danger-600">*</span>
-                                        </label>
-                                        <input type="text" name="name[en]" id="name_en"
-                                            class="form-control radius-8 @error('name.en') is-invalid @enderror"
-                                            value="{{ old('name.en') }}">
-                                        @error('name.en')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-
-                                    {{-- parent_id --}}
+                                    {{-- name --}}
                                     <div class="col-md-12 mb-20">
-                                        <label for="parent_id"
+                                        <label for="name"
                                             class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                            التصنيف الأب
+                                            الاسم <span class="text-danger-600">*</span>
                                         </label>
-                                        <select name="parent_id" id="parent_id"
-                                            class="form-select radius-8 @error('parent_id') is-invalid @enderror">
-                                            <option value="">لا يوجد</option>
-                                            @foreach ($categories as $parentCategory)
-                                                <option value="{{ $parentCategory->id }}">
-                                                    {{ $parentCategory->getTranslation('name', app()->getLocale()) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('parent_id')
+                                        <input type="text" name="name" id="name"
+                                            class="form-control radius-8 @error('name') is-invalid @enderror"
+                                            value="{{ old('name') }}">
+                                        @error('name')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+
 
                                     {{-- رفع الصور --}}
                                     <div class="col-md-12 mb-20">

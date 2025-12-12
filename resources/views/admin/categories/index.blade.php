@@ -16,28 +16,25 @@
         </div> --}}
 
         <div class="card-body p-24">
-            <div class="table-responsive">
+            <div class="table-responsive scroll-sm">
                 <table class="table bordered-table sm-table mb-0">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>الصورة</th>
+                            <th>S.L</th>
                             <th>الاسم</th>
-                            <th>التصنيف الرئيسي</th>
-                            <th class="text-center">العمليات</th>
+                            <th>الصورة</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($categories as $category)
                             <tr>
-                                <td>{{ $category->id }}</td>
-                                <td>
-                                    <img src="{{ $category->getFirstMediaUrl('cover') }}" alt="{{ $category->name }}"
-                                        width="60" height="60" class="rounded">
+                                <td>{{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}
                                 </td>
-                                <td>{{ $category->getTranslation('name', app()->getLocale()) }}</td>
-                                <td>
-                                    {{ $category->parent ? $category->parent->getTranslation('name', app()->getLocale()) : '-' }}
+                                <td>{{ $category->name }}</td>
+                                <td class="text-center">
+                                    <img src="{{ $category->getFirstMediaUrl('categories', 'thumb') }}"
+                                        alt="{{ $category->name }}" width="60" height="60" class="rounded">
                                 </td>
                                 <td class="text-center">
                                     <div class="d-flex align-items-center gap-10 justify-content-center">
@@ -45,9 +42,8 @@
                                             class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                                             <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
                                         </a>
-                                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this category?');"
-                                            style="display:inline-block;">
+                                        {{-- <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this category?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -55,13 +51,13 @@
                                                 <iconify-icon icon="fluent:delete-24-regular"
                                                     class="menu-icon"></iconify-icon>
                                             </button>
-                                        </form>
+                                        </form> --}}
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center text-muted">لا يوجد تصنيفات</td>
+                                <td colspan="4" class="text-center text-muted">لا يوجد تصنيفات</td>
                             </tr>
                         @endforelse
                     </tbody>

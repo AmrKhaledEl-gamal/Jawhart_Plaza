@@ -1,0 +1,9 @@
+models:
+  MedicalDevice:
+    title: json
+    description: json
+    image: string nullable
+
+controllers:
+  Admin\MedicalDevice:
+    resource
