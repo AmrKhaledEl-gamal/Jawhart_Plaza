@@ -15,40 +15,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // إضافة Admin
-        User::create([
+        Admin::create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('123456789'),
-        ]);
-
-        // إضافة بيانات افتراضية للـ About
-        DB::table('abouts')->insert([
-            'about' => 'هذا نص تعريفي تجريبي عن الموقع أو الشركة.',
-            'vision' => 'هذه الرؤية التجريبية لتوضيح شكل البيانات.',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        DB::table('categories')->insert([
-            [
-                'name' => 'التصنيف الاول',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'التصنيف الثانى',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'التصنيق الثالث',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'التصنيف الرابع',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
         ]);
     }
 }
