@@ -37,56 +37,30 @@ Route::get('/change-lang/{lang}', function ($lang) {
 
 // Admin Routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    // Authentication Routes
     Route::middleware('guest:admin')->group(function () {
-        Route::get('/login', [\App\Http\Controllers\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+        Route::get('/login', [\App\Http\Controllers\AdminLoginController::class, 'showLoginForm'])->name('login');
         Route::post('/login', [\App\Http\Controllers\AdminLoginController::class, 'login']);
     });
 
     Route::middleware('auth:admin')->group(function () {
         Route::get('/dashboard', function () {
             return view('admin.dashboard.index');
-        })->name('admin.dashboard');
+        })->name('dashboard');
 
-        Route::post('/logout', [\App\Http\Controllers\AdminLoginController::class, 'logout'])->name('admin.logout');
+        Route::post('/logout', [\App\Http\Controllers\AdminLoginController::class, 'logout'])->name('logout');
+
+        // Resource Routes
+        Route::resource('users', UserController::class);
+        Route::resource('contacts', AdminContactController::class);
+        Route::resource('banners', BannerController::class);
+        Route::resource('products', AdminProductController::class);
+        Route::resource('categories', CategoryController::class);
+
+        // Settings
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
     });
-
-    Route::get('/', [DashboardController::class, 'index'])->name('index');
-
-    // Users Routes
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-
-    Route::resource('contacts', AdminContactController::class);
-
-    Route::resource('banners', BannerController::class);
-
-    // Settings
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
-
-    //products
-    Route::resource('products', AdminProductController::class);
-    // jobs
-    // Route::resource('jobs', AdminJobController::class);
-
-    // Route::delete('products/delete-image/{tourId}/{mediaId}', [AdminProductController::class, 'deleteImage'])
-    //     ->name('products.deleteImage');
-
-    // job applications
-    // Route::resource('applications', JobApplicationController::class);
-
-
-    // Route::get('about', [AboutController::class, 'edit'])->name('about.edit');
-    // Route::post('about', [AboutController::class, 'updateOrCreate'])->name('about.updateOrCreate');
-
-
-    // categories CRUD
-    Route::resource('categories', CategoryController::class);
 });
 
-Auth::routes(['register' => false, 'login' => true, 'logout' => true, 'reset' => false, 'verify' => false]);
+// Auth::routes(['register' => false, 'login' => true, 'logout' => true, 'reset' => false, 'verify' => false]);
