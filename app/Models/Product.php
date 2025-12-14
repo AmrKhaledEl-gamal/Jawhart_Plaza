@@ -14,19 +14,30 @@ class Product extends Model implements HasMedia
 
     protected $guarded = [];
 
-    // الاسم والوصف بيترجموا
     public $translatable = ['name', 'description'];
 
-    // المنتج تبع قسم واحد
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    // المنتج ليه تفاصيل كتير (ألوان ومقاسات مختلفة)
-    // العلاقة دي بتربطنا بجدول الـ Variations
+
     public function variations()
     {
         return $this->hasMany(ProductAttributeValue::class);
+    }
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
+
+    public function minPrice()
+    {
+        return $this->variants()->min('price');
+    }
+
+    public function totalStock()
+    {
+        return $this->variants()->sum('stock');
     }
 }

@@ -14,147 +14,144 @@
     </div>
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
+
             {{-- Dashboard --}}
             <li>
                 <a href="{{ route('admin.index') }}">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
-                    <span>لوحة التحكم</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
-
-
-
 
             {{-- Banners --}}
             <li class="dropdown">
                 <a href="javascript:void(0)">
                     <iconify-icon icon="mdi:image-outline" class="menu-icon"></iconify-icon>
-                    <span>البنرات</span>
+                    <span>Banners</span>
                 </a>
                 <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.banners.index') }}">
                             <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            قائمة البنرات
+                            Banner List
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.banners.create') }}">
                             <iconify-icon icon="mdi:plus-circle-outline"
                                 class="circle-icon text-primary-600"></iconify-icon>
-                            إضافة بنر
+                            Add Banner
                         </a>
                     </li>
                 </ul>
             </li>
 
-            {{-- products --}}
+            {{-- Products --}}
             <li class="dropdown">
                 <a href="javascript:void(0)">
                     <iconify-icon icon="mdi:package-variant-closed" class="menu-icon"></iconify-icon>
-                    <span>المنتجات</span>
+                    <span>Products</span>
                 </a>
                 <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.products.index') }}">
                             <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            قائمة المنتجات
+                            Product List
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.products.create') }}">
                             <iconify-icon icon="mdi:package-variant-closed" class="menu-icon"></iconify-icon>
-                            إضافة منتج
+                            Add Product
                         </a>
                     </li>
                 </ul>
             </li>
+
             {{-- Categories --}}
             <li class="dropdown">
                 <a href="javascript:void(0)">
                     <iconify-icon icon="mdi:shape-outline" class="menu-icon"></iconify-icon>
-                    <span> التصنيفات</span>
+                    <span>Categories</span>
                 </a>
                 <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.categories.index') }}">
                             <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            قائمة التصنيفات
+                            Category List
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('admin.categories.create') }}">
                             <iconify-icon icon="mdi:plus-circle-outline"
                                 class="circle-icon text-primary-600"></iconify-icon>
-                            إضافة تصنيف
+                            Add Category
                         </a>
                     </li>
                 </ul>
             </li>
-            {{-- {jobs} --}}
+
+            {{-- Sizes --}}
             <li class="dropdown">
                 <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:briefcase-outline" class="menu-icon"></iconify-icon>
-                    <span> الوظائف</span>
+                    <iconify-icon icon="mdi:ruler" class="menu-icon"></iconify-icon>
+                    <span>Sizes</span>
                 </a>
                 <ul class="sidebar-submenu">
                     <li>
-                        <a href="{{ route('admin.jobs.index') }}">
+                        <a href="{{ route('admin.sizes.index') }}">
                             <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            قائمة الوظائف
+                            Size List
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.jobs.create') }}">
+                        <a href="{{ route('admin.sizes.create') }}">
                             <iconify-icon icon="mdi:plus-circle-outline"
                                 class="circle-icon text-primary-600"></iconify-icon>
-                            إضافة وظيفة
+                            Add Size
                         </a>
                     </li>
                 </ul>
             </li>
 
-
-            {{-- Contacts --}}
-            <li>
-                <a href="{{ route('admin.contacts.index') }}">
-                    <iconify-icon icon="mdi:phone-outline" class="menu-icon"></iconify-icon>
-                    <span>طلبات التواصل</span>
+            {{-- Colors --}}
+            <li class="dropdown">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="mdi:palette-outline" class="menu-icon"></iconify-icon>
+                    <span>Colors</span>
                 </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="{{ route('admin.colors.index') }}">
+                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
+                            Color List
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.colors.create') }}">
+                            <iconify-icon icon="mdi:plus-circle-outline"
+                                class="circle-icon text-primary-600"></iconify-icon>
+                            Add Color
+                        </a>
+                    </li>
+                </ul>
             </li>
-            {{-- job application --}}
-            <li>
-                <a href="{{ route('admin.applications.index') }}">
-                    <iconify-icon icon="mdi:file-document-outline" class="menu-icon"></iconify-icon>
-                    <span> طلبات التوظيف</span>
-                </a>
-            </li>
-            {{-- About --}}
-            <li>
-                <a href="{{ route('admin.about.edit') }}">
-                    <iconify-icon icon="mdi:information-outline" class="menu-icon"></iconify-icon>
-                    <span> من نحن</span>
-                </a>
-            </li>
-
-
 
             {{-- Settings --}}
             <li class="dropdown">
                 <a href="javascript:void(0)">
                     <iconify-icon icon="mdi:cog-outline" class="menu-icon"></iconify-icon>
-                    <span>الإعدادات</span>
+                    <span>Settings</span>
                 </a>
                 <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.settings.index') }}">
                             <iconify-icon icon="mdi:tune-vertical" class="circle-icon text-primary-600"></iconify-icon>
-                            الاعدادات العامة
+                            General Settings
                         </a>
                     </li>
                 </ul>
             </li>
-
 
         </ul>
     </div>

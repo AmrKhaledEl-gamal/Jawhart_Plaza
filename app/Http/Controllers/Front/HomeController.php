@@ -18,9 +18,12 @@ class HomeController extends Controller
     public function __invoke()
     {
         $banners = Banner::all();
-        $about = About::first();
+        // $about = About::first();
         $categories = Category::latest()->take(6)->get();
         $products = Product::latest()->take(6)->get();
-        return view('front.index', compact('banners', 'categories', 'products', 'about'));
+        $categoriesWithProducts = Category::with(['products' => function ($query) {
+            $query->latest()->take(4);
+        }])->latest()->take(3)->get();
+        return view('front.index', compact('banners', 'categories', 'products', 'categoriesWithProducts'));
     }
 }

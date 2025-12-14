@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @php
-    $title = 'Edit Blog';
-    $subTitle = 'Update Blog';
+    $title = 'Edit Category';
+    $subTitle = 'Update Category';
     $script = '
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script>
@@ -44,25 +44,84 @@
                                 <div class="row">
 
                                     {{-- name --}}
-                                    <div class="col-md-12 mb-20">
-                                        <label for="name"
+                                    <div class="col-md-6 mb-20">
+                                        <label for="name_ar"
                                             class="form-label fw-semibold text-primary-light text-sm mb-8">
-                                            الاسم <span class="text-danger-600">*</span>
+                                            Name (Arabic) <span class="text-danger-600">*</span>
                                         </label>
-                                        <input type="text" name="name" id="name"
-                                            class="form-control radius-8 @error('name') is-invalid @enderror"
-                                            value="{{ old('name', $category->name) }}">
-                                        @error('name')
+                                        <input type="text" name="name[ar]" id="name_ar"
+                                            class="form-control radius-8 @error('name.ar') is-invalid @enderror"
+                                            value="{{ old('name.ar', $category->getTranslation('name', 'ar')) }}"
+                                            placeholder="الاسم بالعربية">
+                                        @error('name.ar')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
-                                    {{-- رفع الصور --}}
-                                    {{-- رفع الصور --}}
+                                    <div class="col-md-6 mb-20">
+                                        <label for="name_en"
+                                            class="form-label fw-semibold text-primary-light text-sm mb-8">
+                                            Name (English) <span class="text-danger-600">*</span>
+                                        </label>
+                                        <input type="text" name="name[en]" id="name_en"
+                                            class="form-control radius-8 @error('name.en') is-invalid @enderror"
+                                            value="{{ old('name.en', $category->getTranslation('name', 'en')) }}"
+                                            placeholder="Name in English">
+                                        @error('name.en')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
+                                    {{-- slug --}}
+                                    <div class="col-md-6 mb-20">
+                                        <label for="slug"
+                                            class="form-label fw-semibold text-primary-light text-sm mb-8">
+                                            Slug <span class="text-danger-600">*</span>
+                                        </label>
+                                        <input type="text" name="slug" id="slug"
+                                            class="form-control radius-8 @error('slug') is-invalid @enderror"
+                                            value="{{ old('slug', $category->slug) }}" placeholder="Enter Slug">
+                                        @error('slug')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
+                                    {{-- parent_id --}}
+                                    <div class="col-md-6 mb-20">
+                                        <label for="parent_id"
+                                            class="form-label fw-semibold text-primary-light text-sm mb-8">
+                                            Parent Category
+                                        </label>
+                                        <select name="parent_id" id="parent_id"
+                                            class="form-control radius-8 form-select @error('parent_id') is-invalid @enderror">
+                                            <option value="">Select Parent Category (Optional)</option>
+                                            @foreach ($parents as $parent)
+                                                <option value="{{ $parent->id }}"
+                                                    {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}>
+                                                    {{ $parent->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('parent_id')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+
+                                    {{-- is_active --}}
+                                    <div class="col-md-12 mb-20">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="is_active"
+                                                name="is_active" value="1"
+                                                {{ old('is_active', $category->is_active) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="is_active">Active</label>
+                                        </div>
+                                    </div>
+
+                                    {{-- Upload Image --}}
                                     <div class="col-md-12 mb-20">
                                         <div class="card h-100 p-0">
                                             <div class="card-header border-bottom bg-base py-16 px-24">
-                                                <h6 class="text-lg fw-semibold mb-0">رفع الصور</h6>
+                                                <h6 class="text-lg fw-semibold mb-0">Upload Image</h6>
                                             </div>
                                             <div class="card-body p-24">
                                                 <div class="upload-image-wrapper d-flex align-items-center gap-3">
@@ -101,11 +160,11 @@
                                     <div class="d-flex align-items-center justify-content-center gap-3 mt-24">
                                         <a href="{{ route('admin.categories.index') }}"
                                             class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8 text-decoration-none">
-                                            إلغاء
+                                            Cancel
                                         </a>
                                         <button type="submit"
                                             class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
-                                            حفظ التغييرات
+                                            Save Changes
                                         </button>
                                     </div>
 

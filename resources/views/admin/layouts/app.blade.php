@@ -131,6 +131,8 @@
         };
     </script>
 
+    @yield('scripts')
+
     <!-- ..::  scripts  end ::.. -->
 
 </body>

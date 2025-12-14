@@ -9,12 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('attributes', function (Blueprint $table) {
-            $table->id();
-            $table->json('name');
-            $table->timestamps();
+        Schema::table('order_items', function (Blueprint $table) {
+            $table->foreignId('product_variant_id')
+                ->after('product_id')
+                ->constrained()
+                ->cascadeOnDelete();
         });
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attributes');
+        //
     }
 };

@@ -7,13 +7,13 @@
 
 @section('content')
     <div class="card h-100 p-0 radius-12">
-        {{-- <div class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center justify-content-between">
+        <div class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center justify-content-between">
             <a href="{{ route('admin.categories.create') }}"
                 class="btn btn-primary text-sm btn-sm px-12 py-12 radius-8 d-flex align-items-center gap-2">
                 <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
                 Add New category
             </a>
-        </div> --}}
+        </div>
 
         <div class="card-body p-24">
             <div class="table-responsive scroll-sm">
@@ -21,8 +21,8 @@
                     <thead>
                         <tr>
                             <th>S.L</th>
-                            <th>الاسم</th>
-                            <th>الصورة</th>
+                            <th>Name</th>
+                            <th>Image</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -42,7 +42,7 @@
                                             class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
                                             <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
                                         </a>
-                                        {{-- <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
+                                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
                                             onsubmit="return confirm('Are you sure you want to delete this category?');">
                                             @csrf
                                             @method('DELETE')
@@ -51,13 +51,13 @@
                                                 <iconify-icon icon="fluent:delete-24-regular"
                                                     class="menu-icon"></iconify-icon>
                                             </button>
-                                        </form> --}}
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted">لا يوجد تصنيفات</td>
+                                <td colspan="4" class="text-center text-muted">No categories found</td>
                             </tr>
                         @endforelse
                     </tbody>

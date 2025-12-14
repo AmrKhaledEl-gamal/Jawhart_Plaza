@@ -26,7 +26,7 @@
                                 <td>{{ $loop->iteration + ($contacts->currentPage() - 1) * $contacts->perPage() }}</td>
 
                                 {{-- ✅ Title translations --}}
-                                <td>{{ $contact->full_name }}</td>
+                                <td>{{ $contact->name }}</td>
                                 <td>{{ $contact->email }}</td>
                                 <td>{{ $contact->phone_number }}</td>
                                 <td>{{ $contact->message }}</td>

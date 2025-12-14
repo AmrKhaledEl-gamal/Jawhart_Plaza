@@ -3,86 +3,97 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductRequest;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Color;
+use App\Models\Size;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->paginate(10);
+        $products = Product::with(['category', 'variants'])->paginate(10);
         $categories = Category::all();
+
         return view('admin.products.index', compact('products', 'categories'));
     }
 
     public function create()
     {
         $categories = Category::all();
+
         return view('admin.products.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products,slug',
-            'category_id' => 'required|exists:categories,id',
-            'is_active' => 'nullable|boolean',
-            'image' => 'nullable|image|max:4096',
-        ]);
+        // إنشاء المنتج بدون سعر الخصم أو المخزون
+        $product = Product::create(
+            $request->safe()->only([
+                'name',
+                'description',
+                'slug',
+                'price',
+                'category_id',
+                'is_active',
+            ])
+        );
 
-        $product = Product::create([
-            'title' => $data['title'],
-            'slug' => $data['slug'],
-            'category_id' => $data['category_id'],
-            'is_active' => $request->has('is_active') ? $data['is_active'] : false,
-        ]);
-
+        // صورة المنتج
         if ($request->hasFile('image')) {
-            $product->addMediaFromRequest('image')->toMediaCollection('products');
+            $product
+                ->addMediaFromRequest('image')
+                ->toMediaCollection('products');
         }
 
-        return redirect()->route('admin.products.index')->with('success', 'product created successfully!');
+        return redirect()
+            ->route('admin.products.edit', $product)
+            ->with('success', 'Product created successfully, add variants now.');
     }
 
-    // صفحة تعديل جولة
     public function edit(Product $product)
     {
+        $product->load(['variants.color', 'variants.size']);
         $categories = Category::all();
-        return view('admin.products.edit', compact('product', 'categories'));
+        $colors = Color::all();
+        $sizes = Size::all();
+
+        return view('admin.products.edit', compact('product', 'categories', 'colors', 'sizes'));
     }
 
-    // تحديث جولة
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products,slug,' . $product->id,
-            'category_id' => 'required|exists:categories,id',
-            'is_active' => 'nullable|boolean',
-            'images' => 'nullable|image|max:4096',
-        ]);
-
-        $product->update([
-            'title' => $data['title'],
-            'slug' => $data['slug'],
-            'is_active' => $request->has('is_active') ? $data['is_active'] : false,
-            'category_id' => $data['category_id'],
-        ]);
+        $product->update(
+            $request->safe()->only([
+                'name',
+                'description',
+                'slug',
+                'price',
+                'category_id',
+                'is_active',
+            ])
+        );
 
         if ($request->hasFile('image')) {
             $product->clearMediaCollection('products');
-            $product->addMediaFromRequest('image')->toMediaCollection('products');
+            $product
+                ->addMediaFromRequest('image')
+                ->toMediaCollection('products');
         }
 
-        return redirect()->route('admin.products.index')->with('success', 'product updated successfully!');
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Product updated successfully!');
     }
 
     public function destroy(Product $product)
     {
         $product->clearMediaCollection('products');
         $product->delete();
-        return redirect()->route('admin.products.index')->with('success', 'product deleted successfully!');
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Product deleted successfully!');
     }
 }
