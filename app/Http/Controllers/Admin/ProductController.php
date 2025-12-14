@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Size;
+use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
@@ -85,6 +86,19 @@ class ProductController extends Controller
         return redirect()
             ->route('admin.products.index')
             ->with('success', 'Product updated successfully!');
+    }
+
+    public function deleteImage(Product $product, int $mediaId): RedirectResponse
+    {
+        $media = $product->media()->where('id', $mediaId)->first();
+
+        if ($media) {
+            $media->delete();
+        }
+
+        return redirect()
+            ->back()
+            ->with('success', 'Product image deleted successfully!');
     }
 
     public function destroy(Product $product)

@@ -90,7 +90,7 @@
         </div>
 
         <div class="box pt0">
-            <a href="{{ route('shop') }}" class="store moreBtn mb10"> {{ __('front.view_all') }} </a>
+            <a href={{-- "{{ route('shop') }}" --}} class="store moreBtn mb10"> {{ __('front.view_all') }} </a>
 
             <div class="swiper imagesSlider2" id="imagesSlider">
                 <div class="swiper-wrapper">

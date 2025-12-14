@@ -137,6 +137,68 @@
                 </ul>
             </li>
 
+            {{-- Orders --}}
+            <li>
+                <a href="{{ route('admin.orders.index') }}">
+                    <iconify-icon icon="mdi:clipboard-list-outline" class="menu-icon"></iconify-icon>
+                    <span>Orders</span>
+                </a>
+            </li>
+
+            {{-- Coupons --}}
+            <li class="dropdown">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="mdi:ticket-percent-outline" class="menu-icon"></iconify-icon>
+                    <span>Coupons</span>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="{{ route('admin.coupons.index') }}">
+                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
+                            Coupon List
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.coupons.create') }}">
+                            <iconify-icon icon="mdi:plus-circle-outline"
+                                class="circle-icon text-primary-600"></iconify-icon>
+                            Add Coupon
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- FAQs --}}
+            <li class="dropdown">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="mdi:help-circle-outline" class="menu-icon"></iconify-icon>
+                    <span>FAQs</span>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="{{ route('admin.faqs.index') }}">
+                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
+                            FAQ List
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.faqs.create') }}">
+                            <iconify-icon icon="mdi:plus-circle-outline"
+                                class="circle-icon text-primary-600"></iconify-icon>
+                            Add FAQ
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- Carts --}}
+            <li>
+                <a href="{{ route('admin.carts.index') }}">
+                    <iconify-icon icon="mdi:cart-outline" class="menu-icon"></iconify-icon>
+                    <span>Carts</span>
+                </a>
+            </li>
+
             {{-- Settings --}}
             <li class="dropdown">
                 <a href="javascript:void(0)">

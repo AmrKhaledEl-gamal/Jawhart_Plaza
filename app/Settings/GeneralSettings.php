@@ -6,14 +6,16 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
-
-    public string $site_name;
-    public string $site_meta_description;
+    /**
+     * Translatable fields (ar/en)
+     * Stored as arrays in the settings repository.
+     */
+    public array|string $site_name;
+    public array|string $site_meta_description;
     public string $site_meta_keywords;
     public string $site_meta_author;
 
-    public string $address;
-
+    public array|string $address;
 
     public string $phone_number;
     public string $email;

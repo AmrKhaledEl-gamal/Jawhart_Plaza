@@ -34,12 +34,28 @@ class ProductVariantController extends Controller
         return response()->json([
             'message' => 'Variant added',
             'variant' => [
-                'id'    => $variant->id,
-                'color' => $variant->color->name,
-                'size'  => $variant->size->name,
-                'price' => $variant->price,
-                'stock' => $variant->stock,
+                'id'         => $variant->id,
+                'color_code' => $variant->color->code,
+                'size'       => $variant->size->name,
+                'price'      => $variant->price,
+                'stock'      => $variant->stock,
             ]
         ], 201);
+    }
+
+    public function destroy(Product $product, ProductVariant $variant)
+    {
+        // Ensure the variant belongs to the current product (avoid deleting another product's variant)
+        if ((int) $variant->product_id !== (int) $product->id) {
+            return response()->json([
+                'message' => 'Variant not found for this product'
+            ], 404);
+        }
+
+        $variant->delete();
+
+        return response()->json([
+            'message' => 'Variant deleted'
+        ], 200);
     }
 }

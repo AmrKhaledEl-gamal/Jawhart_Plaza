@@ -1,16 +1,20 @@
 <?php
 
 use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Front\HomeController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\ProductController as AdminProductController;
-use App\Http\Controllers\Admin\ContactController as AdminContactController;
-use App\Http\Controllers\Front\ProductController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CartController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -45,7 +49,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:admi
     Route::get('/admins/{user}', [UserController::class, 'show'])->name('admins.show');
     Route::delete('/admins/{user}', [UserController::class, 'destroy'])->name('admins.destroy');
 
-
+    // Banners
     Route::resource('banners', BannerController::class);
 
     // Settings
@@ -53,30 +57,32 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:admi
     Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
 
     // Products
-    Route::resource('products', AdminProductController::class);
+    Route::resource('products', AdminProductController::class)->except('show');
 
-    Route::resource('products', AdminProductController::class);
-
-    Route::delete('products/delete-image/{tourId}/{mediaId}', [AdminProductController::class, 'deleteImage'])
+    Route::delete('products/delete-image/{product}/{mediaId}', [AdminProductController::class, 'deleteImage'])
         ->name('products.deleteImage');
 
-    Route::resource('contacts', AdminContactController::class);
-
-    Route::resource('colors', ColorController::class)->except('show');
-    Route::resource('sizes', SizeController::class)->except('show');
-
-
-    //ProductVariantController
+    // ProductVariantController
     Route::post('products/{product}/variants', [\App\Http\Controllers\Admin\ProductVariantController::class, 'store'])
         ->name('products.variants.store');
     Route::delete('products/{product}/variants/{variant}', [\App\Http\Controllers\Admin\ProductVariantController::class, 'destroy'])
         ->name('products.variants.destroy');
 
+    // Contacts
+    Route::resource('contacts', AdminContactController::class);
 
+    // Attributes
+    Route::resource('colors', ColorController::class)->except('show');
+    Route::resource('sizes', SizeController::class)->except('show');
 
-
-    // categories CRUD
+    // Categories
     Route::resource('categories', CategoryController::class);
+
+    // Missing Admin modules
+    Route::get('carts', [CartController::class, 'index'])->name('carts.index');
+    Route::resource('coupons', CouponController::class)->except('show');
+    Route::resource('faqs', FaqController::class)->except('show');
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'update', 'destroy']);
 });
 
 Auth::routes(['register' => false, 'login' => true, 'logout' => true, 'reset' => false, 'verify' => false]);

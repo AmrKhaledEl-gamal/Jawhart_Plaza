@@ -20,7 +20,13 @@ class HomeController extends Controller
         $banners = Banner::all();
         // $about = About::first();
         $categories = Category::latest()->take(6)->get();
-        $products = Product::latest()->take(6)->get();
+
+        // Top selling section: show active products only
+        $products = Product::query()
+            ->where('is_active', 1)
+            ->latest()
+            ->take(6)
+            ->get();
         $categoriesWithProducts = Category::with(['products' => function ($query) {
             $query->latest()->take(4);
         }])->latest()->take(3)->get();

@@ -1,84 +1,77 @@
 @extends('admin.layouts.app')
 
+@php
+    $title = 'Settings';
+    $subTitle = 'Site settings';
+@endphp
+
 @section('content')
-    @php
-        $title = 'Edit Blog';
-        $subTitle = 'Update Blog';
-        $script = '
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-    <script>
-        const fileInput = document.getElementById("upload-file");
-        const imagePreview = document.getElementById("uploaded-img__preview");
-        const uploadedImgContainer = document.querySelector(".uploaded-img");
-        const removeButton = document.querySelector(".uploaded-img__remove");
+    <div class="card h-100 p-0 radius-12">
+        <div class="card-header border-bottom bg-base py-16 px-24">
+            <h6 class="text-lg fw-semibold mb-0">إعدادات الموقع</h6>
+        </div>
 
-        fileInput.addEventListener("change", (e) => {
-            if (e.target.files.length) {
-                const src = URL.createObjectURL(e.target.files[0]);
-                imagePreview.src = src;
-                uploadedImgContainer.classList.remove("d-none");
-            }
-        });
+        <div class="card-body p-24">
+            <form action="{{ route('admin.settings.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-        removeButton.addEventListener("click", () => {
-            imagePreview.src = "";
-            uploadedImgContainer.classList.add("d-none");
-            fileInput.value = "";
-        });
+                <div class="card mb-4">
+                    <div class="card-header">معلومات عامة</div>
+                    <div class="card-body">
 
-        ClassicEditor.create(document.querySelector("#body")).catch(error => {
-            console.error(error);
-        });
-    </script>';
-    @endphp
-    <div class="container py-4">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">اسم الموقع (AR)</label>
+                                <input type="text" name="site_name[ar]" class="form-control"
+                                    value="{{ is_array($settings->site_name) ? ($settings->site_name['ar'] ?? '') : '' }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Site Name (EN)</label>
+                                <input type="text" name="site_name[en]" class="form-control"
+                                    value="{{ is_array($settings->site_name) ? ($settings->site_name['en'] ?? '') : ($settings->site_name ?? '') }}">
+                            </div>
+                        </div>
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Meta Description (AR)</label>
+                                <textarea name="site_meta_description[ar]" class="form-control" rows="3">{{ is_array($settings->site_meta_description) ? ($settings->site_meta_description['ar'] ?? '') : '' }}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Meta Description (EN)</label>
+                                <textarea name="site_meta_description[en]" class="form-control" rows="3">{{ is_array($settings->site_meta_description) ? ($settings->site_meta_description['en'] ?? '') : ($settings->site_meta_description ?? '') }}</textarea>
+                            </div>
+                        </div>
 
-        <h2 class="mb-4">إعدادات الموقع</h2>
+                        <div class="mb-3">
+                            <label class="form-label">Meta Keywords</label>
+                            <input type="text" name="site_meta_keywords" class="form-control" value="{{ $settings->site_meta_keywords }}">
+                        </div>
 
-        <form action="{{ route('admin.settings.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+                        <div class="mb-3">
+                            <label class="form-label">Meta Author</label>
+                            <input type="text" name="site_meta_author" class="form-control" value="{{ $settings->site_meta_author }}">
+                        </div>
 
-            <div class="card mb-4">
-                <div class="card-header">معلومات عامة</div>
-                <div class="card-body">
-
-                    <div class="mb-3">
-                        <label class="form-label">اسم الموقع</label>
-                        <input type="text" name="site_name" class="form-control" value="{{ $settings->site_name }}">
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Meta Description</label>
-                        <textarea name="site_meta_description" class="form-control" rows="3">{{ $settings->site_meta_description }}</textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Meta Keywords</label>
-                        <input type="text" name="site_meta_keywords" class="form-control"
-                            value="{{ $settings->site_meta_keywords }}">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Meta Author</label>
-                        <input type="text" name="site_meta_author" class="form-control"
-                            value="{{ $settings->site_meta_author }}">
-                    </div>
-
                 </div>
-            </div>
 
 
-            <div class="card mb-4">
-                <div class="card-header">معلومات التواصل</div>
-                <div class="card-body">
+                <div class="card mb-4">
+                    <div class="card-header">معلومات التواصل</div>
+                    <div class="card-body">
 
-                    <div class="mb-3">
-                        <label class="form-label">العنوان</label>
-                        <input type="text" name="address" class="form-control" value="{{ $settings->address }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">العنوان (AR)</label>
+                            <input type="text" name="address[ar]" class="form-control"
+                                value="{{ is_array($settings->address) ? ($settings->address['ar'] ?? '') : '' }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Address (EN)</label>
+                            <input type="text" name="address[en]" class="form-control"
+                                value="{{ is_array($settings->address) ? ($settings->address['en'] ?? '') : ($settings->address ?? '') }}">
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -96,9 +89,9 @@
             </div>
 
 
-            <div class="card mb-4">
-                <div class="card-header">السوشيال ميديا</div>
-                <div class="card-body">
+                <div class="card mb-4">
+                    <div class="card-header">السوشيال ميديا</div>
+                    <div class="card-body">
 
                     <div class="mb-3">
                         <label class="form-label">Facebook</label>
@@ -119,39 +112,67 @@
             </div>
 
 
-            <div class="card mb-4">
-                <div class="card-header">الصور</div>
-                <div class="card-body">
-
-                    <div class="mb-3">
-                        <label class="form-label">Logo</label>
-                        <input type="file" name="site_logo" class="form-control">
-
-                        @if ($settings->site_logo)
-                            <div class="mt-2">
-                                <img src="{{ asset('storage/' . $settings->site_logo) }}" alt="logo" height="60">
+                <div class="card mb-4">
+                    <div class="card-header">الصور</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Logo</label>
+                                <input id="site-logo-input" type="file" name="site_logo" class="form-control" accept="image/*">
+                                <div class="mt-2 d-flex align-items-center gap-3">
+                                    @if (!empty($settings->site_logo))
+                                        <img id="site-logo-preview" src="{{ asset('storage/' . $settings->site_logo) }}" alt="logo"
+                                            width="90" height="90" class="rounded" style="object-fit: cover;">
+                                    @else
+                                        <img id="site-logo-preview" src="" alt="logo" width="90" height="90" class="rounded d-none"
+                                            style="object-fit: cover;">
+                                    @endif
+                                    <small class="text-muted">Preview logo before saving.</small>
+                                </div>
                             </div>
-                        @endif
-                    </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Favicon</label>
-                        <input type="file" name="site_favicon" class="form-control">
-
-                        @if ($settings->site_favicon)
-                            <div class="mt-2">
-                                <img src="{{ asset('storage/' . $settings->site_favicon) }}" alt="favicon" height="40">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Favicon</label>
+                                <input id="site-favicon-input" type="file" name="site_favicon" class="form-control" accept="image/*">
+                                <div class="mt-2 d-flex align-items-center gap-3">
+                                    @if (!empty($settings->site_favicon))
+                                        <img id="site-favicon-preview" src="{{ asset('storage/' . $settings->site_favicon) }}" alt="favicon"
+                                            width="48" height="48" class="rounded" style="object-fit: cover;">
+                                    @else
+                                        <img id="site-favicon-preview" src="" alt="favicon" width="48" height="48" class="rounded d-none"
+                                            style="object-fit: cover;">
+                                    @endif
+                                    <small class="text-muted">Preview favicon before saving.</small>
+                                </div>
                             </div>
-                        @endif
+                        </div>
                     </div>
-
                 </div>
-            </div>
 
-
-            <button type="submit" class="btn btn-primary w-100">حفظ الإعدادات</button>
-
-        </form>
-
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary px-32">حفظ الإعدادات</button>
+                </div>
+            </form>
+        </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        function bindImagePreview(inputId, imgId) {
+            const input = document.getElementById(inputId);
+            const img = document.getElementById(imgId);
+            if (!input || !img) return;
+
+            input.addEventListener('change', (e) => {
+                if (!e.target.files || !e.target.files.length) return;
+                const src = URL.createObjectURL(e.target.files[0]);
+                img.src = src;
+                img.classList.remove('d-none');
+            });
+        }
+
+        bindImagePreview('site-logo-input', 'site-logo-preview');
+        bindImagePreview('site-favicon-input', 'site-favicon-preview');
+    </script>
 @endsection

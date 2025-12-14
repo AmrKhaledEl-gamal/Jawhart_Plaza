@@ -17,7 +17,7 @@
                 <div class="col-md-6 mb-20">
                     <label>Choose Color</label>
                     <input type="color" name="code" class="form-control form-control-color"
-                        value="{{ $color->code ?? '#000000' }}" required>
+                        value="{{ $color->code ?? '#000000' }}" required style="padding:0">
                 </div>
 
                 <div class="col-md-6 mb-20 d-flex align-items-end">

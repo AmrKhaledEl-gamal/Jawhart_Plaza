@@ -1,8 +1,18 @@
 <head>
     <meta charset="UTF-8 " dir="rtl">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $settings->site_name ?? config('site_name') }} - Dashboard</title>
-    <link rel="icon" href="{{ asset('storage/' . ($settings->site_favicon ?? 'default-favicon.png')) }}"
+    @php
+        $locale = app()->getLocale();
+        $siteName = $settings->site_name ?? config('app.name');
+        if (is_array($siteName)) {
+            $siteName = $siteName[$locale] ?? ($siteName['en'] ?? reset($siteName));
+        }
+        $faviconPath = $settings->site_favicon ?? null;
+    @endphp
+
+    <title>{{ $siteName }} - Dashboard</title>
+    <link rel="icon"
+        href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('assets/images/favicon.png') }}"
         type="image/png" sizes="16x16">
     <!-- remix icon font css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">

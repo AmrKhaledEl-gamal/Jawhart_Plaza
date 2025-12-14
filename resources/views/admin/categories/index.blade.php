@@ -21,20 +21,32 @@
                     <thead>
                         <tr>
                             <th>S.L</th>
-                            <th>Name</th>
+                            <th>Name (AR)</th>
+                            <th>Name (EN)</th>
                             <th>Image</th>
+                            <th>Status</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($categories as $category)
                             <tr>
-                                <td>{{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}
-                                </td>
-                                <td>{{ $category->name }}</td>
+                                <td>{{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}</td>
+                                <td>{{ $category->getTranslation('name', 'ar') }}</td>
+                                <td>{{ $category->getTranslation('name', 'en') }}</td>
                                 <td class="text-center">
-                                    <img src="{{ $category->getFirstMediaUrl('categories', 'thumb') }}"
-                                        alt="{{ $category->name }}" width="60" height="60" class="rounded">
+                                    @php($img = $category->getFirstMediaUrl('categories'))
+                                    @if (!empty($img))
+                                        <img src="{{ $img }}" alt="{{ $category->getTranslation('name', app()->getLocale()) }}" width="60" height="60"
+                                            class="rounded">
+                                    @else
+                                        <span class="text-muted">No Image</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <span class="badge {{ $category->is_active ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $category->is_active ? 'Active' : 'Inactive' }}
+                                    </span>
                                 </td>
                                 <td class="text-center">
                                     <div class="d-flex align-items-center gap-10 justify-content-center">
@@ -48,8 +60,7 @@
                                             @method('DELETE')
                                             <button type="submit"
                                                 class="bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle border-0">
-                                                <iconify-icon icon="fluent:delete-24-regular"
-                                                    class="menu-icon"></iconify-icon>
+                                                <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
                                             </button>
                                         </form>
                                     </div>
@@ -57,7 +68,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted">No categories found</td>
+                                <td colspan="6" class="text-center text-muted">No categories found</td>
                             </tr>
                         @endforelse
                     </tbody>

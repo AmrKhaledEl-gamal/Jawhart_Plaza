@@ -27,6 +27,18 @@
 
         ClassicEditor.create(document.querySelector("#description_ar")).catch(console.error);
         ClassicEditor.create(document.querySelector("#description_en")).catch(console.error);
+
+        // Product image preview
+        const productImageInput = document.getElementById("product-image-input");
+        const productImagePreview = document.getElementById("product-image-preview");
+        if (productImageInput && productImagePreview) {
+            productImageInput.addEventListener("change", (e) => {
+                if (!e.target.files || !e.target.files.length) return;
+                const src = URL.createObjectURL(e.target.files[0]);
+                productImagePreview.src = src;
+                productImagePreview.classList.remove("d-none");
+            });
+        }
     </script>';
 @endphp
 
@@ -97,7 +109,13 @@
                     {{-- Image --}}
                     <div class="col-md-12 mb-20">
                         <label class="form-label">Product Image</label>
-                        <input type="file" name="image" class="form-control">
+                        <input id="product-image-input" type="file" name="image" class="form-control" accept="image/*">
+
+                        <div class="mt-2 d-flex align-items-center gap-3">
+                            <img id="product-image-preview" src="" alt="preview" width="90" height="90" class="rounded d-none"
+                                style="object-fit: cover;">
+                            <small class="text-muted">Choose an image to preview before saving.</small>
+                        </div>
                     </div>
 
                     {{-- Buttons --}}

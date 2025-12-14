@@ -4,9 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="{{ asset('front/media/tap-icon.svg') }}" type="image/x-icon" />
-    <link rel="shortcut icon" href="{{ asset('front/media/tap-icon.svg') }}" />
-    <link rel="apple-touch-icon" href="{{ asset('front/media/tap-icon.svg') }}" />
+    @php
+        $locale = app()->getLocale();
+        $siteName = $settings->site_name ?? config('app.name');
+        if (is_array($siteName)) {
+            $siteName = $siteName[$locale] ?? ($siteName['en'] ?? reset($siteName));
+        }
+        $metaDesc = $settings->site_meta_description ?? '';
+        if (is_array($metaDesc)) {
+            $metaDesc = $metaDesc[$locale] ?? ($metaDesc['en'] ?? reset($metaDesc));
+        }
+        $faviconPath = $settings->site_favicon ?? null;
+    @endphp
+
+    <link rel="icon" href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}" />
+    <link rel="apple-touch-icon" href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}" />
     <meta name="color-scheme" content="light only">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css">
     <link rel="stylesheet" href="{{ asset('front/js/swiper-bundle.min.css') }}">
@@ -16,7 +29,10 @@
     @else
         <link rel="stylesheet" href="{{ asset('front/enscss/style.css') }}">
     @endif
-    <title>Jawhart Plaza</title>
+    <title>{{ $siteName }}</title>
+    @if (!empty($metaDesc))
+        <meta name="description" content="{{ $metaDesc }}">
+    @endif
 </head>
 
 <body>
@@ -69,20 +85,24 @@
 
     <footer>
         <div class="box footer">
+            @php
+                $logoPath = $settings->site_logo ?? null;
+            @endphp
             <div class="footerLogo">
-                <img src="./media/logo.png" alt="">
+                <img src="{{ $logoPath ? asset('storage/' . $logoPath) : asset('front/media/logo.png') }}" alt="logo">
                 <div class="aboutText colorfff">
-                    <p>
-                        Duis ut ornare elit. Proin sit amet rutrum nibh. Morbi pulvinar est quis massaciaculis
-                        malesuada. Fusce in
-                        aliquam erat. Suspendisse id mattis urnafashion.
-                    </p>
+                    <p>{{ $metaDesc }}</p>
                 </div>
                 <div class="media">
-                    <a href="##"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="##"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="##"><i class="fa-brands fa-linkedin-in"></i></a>
-                    <a href="##"><i class="fa-brands fa-snapchat"></i></a>
+                    @if (!empty($settings->facebook))
+                        <a href="{{ $settings->facebook }}" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
+                    @endif
+                    @if (!empty($settings->instagram))
+                        <a href="{{ $settings->instagram }}" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+                    @endif
+                    @if (!empty($settings->whatsapp))
+                        <a href="{{ $settings->whatsapp }}" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+                    @endif
                 </div>
             </div>
             <div class="footerLinkGroup">

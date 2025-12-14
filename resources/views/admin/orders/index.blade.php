@@ -1,43 +1,43 @@
 @extends('admin.layouts.app')
 
 @php
-    $title = 'Sizes';
-    $subTitle = 'Manage Sizes';
+    $title = 'Orders';
+    $subTitle = 'All orders';
 @endphp
 
 @section('content')
     <div class="card h-100 p-0 radius-12">
-        <div class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center justify-content-between">
-            <a href="{{ route('admin.sizes.create') }}"
-                class="btn btn-primary text-sm btn-sm px-12 py-12 radius-8 d-flex align-items-center gap-2">
-                <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"></iconify-icon>
-                Add Size
-            </a>
-        </div>
-
         <div class="card-body p-24">
             <div class="table-responsive scroll-sm">
                 <table class="table bordered-table sm-table mb-0">
                     <thead>
                         <tr>
                             <th>S.L</th>
-                            <th>Name</th>
+                            <th>Order #</th>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Date</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($sizes as $size)
+                        @forelse ($orders as $order)
                             <tr>
-                                <td>{{ $loop->iteration + ($sizes->currentPage() - 1) * $sizes->perPage() }}</td>
-                                <td>{{ $size->name }}</td>
+                                <td>{{ $loop->iteration + ($orders->currentPage() - 1) * $orders->perPage() }}</td>
+                                <td>{{ $order->id }}</td>
+                                <td>{{ $order->user->name ?? '—' }}</td>
+                                <td>
+                                    <span class="badge bg-primary">{{ $order->status ?? 'pending' }}</span>
+                                </td>
+                                <td>{{ optional($order->created_at)->format('d M Y') }}</td>
                                 <td class="text-center">
                                     <div class="d-flex align-items-center gap-10 justify-content-center">
-                                        <a href="{{ route('admin.sizes.edit', $size) }}"
-                                            class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
-                                            <iconify-icon icon="lucide:edit" class="menu-icon"></iconify-icon>
+                                        <a href="{{ route('admin.orders.show', $order) }}"
+                                            class="bg-primary-focus text-primary-600 bg-hover-primary-200 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle">
+                                            <iconify-icon icon="mdi:eye-outline" class="menu-icon"></iconify-icon>
                                         </a>
-                                        <form action="{{ route('admin.sizes.destroy', $size) }}" method="POST"
-                                            onsubmit="return confirm('Delete this size?');">
+                                        <form action="{{ route('admin.orders.destroy', $order) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this order?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -50,19 +50,19 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center text-muted">No sizes found</td>
+                                <td colspan="6" class="text-center text-muted">No orders found</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
 
+            {{-- Pagination --}}
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-24">
                 <span>
-                    Showing {{ $sizes->firstItem() ?? 0 }} to {{ $sizes->lastItem() ?? 0 }} of {{ $sizes->total() ?? 0 }}
-                    entries
+                    Showing {{ $orders->firstItem() ?? 0 }} to {{ $orders->lastItem() ?? 0 }} of {{ $orders->total() ?? 0 }} entries
                 </span>
-                {{ $sizes->links() }}
+                {{ $orders->links() }}
             </div>
         </div>
     </div>

@@ -7,13 +7,13 @@ return new class extends SettingsMigration
     public function up(): void
     {
         // Site Details and seo
-        $this->migrator->add('general.site_name', 'My Site');
-        $this->migrator->add('general.site_meta_description', 'My Site Description');
+        $this->migrator->add('general.site_name', ['en' => 'My Site', 'ar' => 'موقعي']);
+        $this->migrator->add('general.site_meta_description', ['en' => 'My Site Description', 'ar' => 'وصف الموقع']);
         $this->migrator->add('general.site_meta_keywords', 'My Site Keywords');
         $this->migrator->add('general.site_meta_author', 'My Site Author');
 
         // Addresses
-        $this->migrator->add('general.address', 'My Site Title');
+        $this->migrator->add('general.address', ['en' => 'My Address', 'ar' => 'العنوان']);
 
         // Phone Numbers 1, 2
         $this->migrator->add('general.phone_number', '00 0000 0000');

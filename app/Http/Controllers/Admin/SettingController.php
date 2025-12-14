@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Settings\GeneralSettings;
+use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
@@ -16,12 +16,21 @@ class SettingController extends Controller
     public function store(Request $request, GeneralSettings $settings)
     {
         $data = $request->validate([
-            'site_name' => 'required|string|max:255',
-            'site_meta_description' => 'nullable|string',
+            'site_name' => 'required|array',
+            'site_name.ar' => 'required|string|max:255',
+            'site_name.en' => 'required|string|max:255',
+
+            'site_meta_description' => 'nullable|array',
+            'site_meta_description.ar' => 'nullable|string',
+            'site_meta_description.en' => 'nullable|string',
+
             'site_meta_keywords' => 'nullable|string',
             'site_meta_author' => 'nullable|string',
 
-            'address' => 'nullable|string',
+            'address' => 'nullable|array',
+            'address.ar' => 'nullable|string',
+            'address.en' => 'nullable|string',
+
             'phone_number' => 'nullable|string',
             'email' => 'nullable|email',
 

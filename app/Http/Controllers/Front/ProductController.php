@@ -15,7 +15,11 @@ class ProductController extends Controller
 
         // البحث
         if ($request->filled('searchFilter')) {
-            $query->where('title', 'like', '%' . $request->searchFilter . '%');
+            $search = trim($request->searchFilter);
+            $locale = app()->getLocale();
+
+            // Product::name is translatable (JSON). Search in the current locale.
+            $query->where("name->$locale", 'like', "%{$search}%");
         }
 
         // الفلترة بالتصنيف
