@@ -5,34 +5,92 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Display product details page
+     */
+    public function show(Product $product)
     {
-        $query = Product::query();
+        // Load relationships
+        $product->load([
+            'category',
+            'variants.color',
+            'variants.size',
+            'reviews',
+            'media'
+        ]);
 
-        // البحث
-        if ($request->filled('searchFilter')) {
-            $search = trim($request->searchFilter);
-            $locale = app()->getLocale();
+        // Get available sizes and colors from variants
+        $availableSizes = $product->variants->pluck('size')->unique('id')->values();
+        $availableColors = $product->variants->pluck('color')->unique('id')->values();
 
-            // Product::name is translatable (JSON). Search in the current locale.
-            $query->where("name->$locale", 'like', "%{$search}%");
+        // Calculate total stock
+        $totalStock = $product->variants->sum('stock');
+
+        // Calculate average rating
+        $avgRating = $product->reviews->avg('rating') ?? 0;
+        $reviewsCount = $product->reviews->count();
+
+        // Get related products (same category, excluding current product)
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->where(function ($q) {
+                $q->where('is_active', true)->orWhereNull('is_active');
+            })
+            ->with(['media', 'reviews'])
+            ->limit(8)
+            ->get();
+
+        // Get product images
+        $productImages = $product->getMedia('products');
+
+        // Check if product is in user's wishlist
+        $isInWishlist = false;
+        if (auth()->check()) {
+            $isInWishlist = \App\Models\Wishlist::where('user_id', auth()->id())
+                ->where('product_id', $product->id)
+                ->exists();
         }
 
-        // الفلترة بالتصنيف
-        if ($request->filled('categories')) {
-            $query->where('category_id', $request->categories);
-        }
+        return view('front.products.show', compact(
+            'product',
+            'availableSizes',
+            'availableColors',
+            'totalStock',
+            'avgRating',
+            'reviewsCount',
+            'relatedProducts',
+            'productImages',
+            'isInWishlist'
+        ));
+    }
 
-        $products = $query->latest()->paginate(9)->withQueryString();
+    /**
+     * Store a new review for a product (authenticated users only)
+     */
+    public function storeReview(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+        ]);
 
-        $notfound = $products->count() == 0;
+        $user = auth()->user();
 
-        $categories = Category::all();
+        $product->reviews()->create([
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'rating' => $validated['rating'],
+            'comment' => $validated['comment'],
+        ]);
 
-        return view('front.products.index', compact('products', 'categories', 'notfound'));
+        return redirect()
+            ->back()
+            ->with('success', __('front.review_submitted'));
     }
 }

@@ -11,7 +11,7 @@
                 {{ __('front.about_hero_description') }}
             </p>
 
-            <a href="{{ route('front.products.index') }}" class="store mt20">
+            <a href="{{ route('front.shop.index') }}" class="store mt20">
                 {{ __('front.shop_now') }}
             </a>
         </div>

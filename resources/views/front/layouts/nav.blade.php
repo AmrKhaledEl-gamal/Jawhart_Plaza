@@ -5,6 +5,14 @@
     if (is_array($siteName)) {
         $siteName = $siteName[$locale] ?? ($siteName['en'] ?? reset($siteName));
     }
+
+    // Get cart count for authenticated users
+    $cartCount = 0;
+    $wishlistCount = 0;
+    if (auth()->check()) {
+        $cartCount = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
+        $wishlistCount = \App\Models\Wishlist::where('user_id', auth()->id())->count();
+    }
 @endphp
 
 <nav>
@@ -16,30 +24,62 @@
         <div class="links">
             <div class="ls">
                 <ul class="mainLinks">
-                    <li><a class="link active" href="{{ route('front.index') }}">Home</a></li>
-                    <li><a class="link" href="{{ asset('front/enpages/hoodies.html') }}"> Hoodies</a></li>
-                    <li><a class="link" href="{{ asset('front/enpages/men.html') }}">Men</a></li>
-                    <li><a class="link" href="{{ asset('front/enpages/women.html') }}"> Women</a></li>
-                    <li><a class="link" href="{{ asset('front/enpages/kids.html') }}"> kids</a></li>
-                    <li><a class="link" href="{{ route('front.shop.index') }}"> Shop</a></li>
+                    <li><a class="link {{ request()->routeIs('front.index') ? 'active' : '' }}"
+                            href="{{ route('front.index') }}">{{ __('front.home') }}</a></li>
+                    <li><a class="link {{ request()->routeIs('front.shop.index') ? 'active' : '' }}"
+                            href="{{ route('front.shop.index') }}">{{ __('front.shop') }}</a></li>
+                    <li><a class="link {{ request()->routeIs('front.about') ? 'active' : '' }}"
+                            href="{{ route('front.about') }}">{{ __('front.about') }}</a></li>
+                    <li><a class="link {{ request()->routeIs('front.contact.*') ? 'active' : '' }}"
+                            href="{{ route('front.contact.index') }}">{{ __('front.contact') }}</a></li>
                     <li>
-                        <form class="search">
-                            <input type="search" placeholder="Explore">
+                        <form class="search" action="{{ route('front.shop.index') }}" method="GET">
+                            <input type="search" name="search" placeholder="{{ __('front.search') }}"
+                                value="{{ request('search') }}">
                             <button type="submit">
-                                <i class="fa-regular fa-magnifying-glass"></i></a>
+                                <i class="fa-regular fa-magnifying-glass"></i>
                             </button>
                         </form>
                     </li>
                 </ul>
                 <div class="mLinks">
-                    <a href="./enpages/whishlist.html"><img class="cw30img"
-                            src="{{ asset('front/media/icons/heart.svg') }}" alt=""> </a>
-                    <button class="cart"><img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}"
-                            alt="">
-                        <span>0</span></button>
-                    <a class="fw500" href="front/enpages/login.html">
-                        <img class="cw30img" src="{{ asset('front/media/icons/user.svg') }}" alt="">
-                    </a>
+                    @auth
+                        <a href="{{ route('front.wishlist') }}" title="{{ __('front.my_wishlist') }}">
+                            <img class="cw30img" src="{{ asset('front/media/icons/heart.svg') }}" alt="">
+                            @if ($wishlistCount > 0)
+                                <span class="badge">{{ $wishlistCount }}</span>
+                            @endif
+                        </a>
+                        <button class="cart" title="{{ __('front.my_cart') }}">
+                            <img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}" alt="">
+                            <span>{{ $cartCount }}</span>
+                        </button>
+                        <div class="drop user-menu">
+                            <a href="#" class="fw500">
+                                <img class="cw30img" src="{{ asset('front/media/icons/user.svg') }}" alt="">
+                            </a>
+                            <span class="dropMenu">
+                                <span class="user-name">{{ auth()->user()->name }}</span>
+                                <a href="{{ route('front.cart') }}">{{ __('front.my_cart') }}</a>
+                                <a href="{{ route('front.wishlist') }}">{{ __('front.my_wishlist') }}</a>
+                                <form action="{{ route('front.logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit">{{ __('front.logout') }}</button>
+                                </form>
+                            </span>
+                        </div>
+                    @else
+                        <a href="{{ route('front.wishlist') }}" title="{{ __('front.my_wishlist') }}">
+                            <img class="cw30img" src="{{ asset('front/media/icons/heart.svg') }}" alt="">
+                        </a>
+                        <a href="{{ route('front.cart') }}" class="cart" title="{{ __('front.my_cart') }}">
+                            <img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}" alt="">
+                            <span>0</span>
+                        </a>
+                        <a class="fw500" href="{{ route('front.login') }}" title="{{ __('front.sign_in') }}">
+                            <img class="cw30img" src="{{ asset('front/media/icons/user.svg') }}" alt="">
+                        </a>
+                    @endauth
                     <div class="drop">
                         <a href="#">
                             <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt="">
@@ -61,15 +101,43 @@
         </div>
         <div class="last">
             <div class="mLinks">
-                <a href="./enpages/whishlist.html"><img class="cw30img"
-                        src="{{ asset('front/media/icons/heart.svg') }}" alt="">
-                </a>
-                <button class="cart"><img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}"
-                        alt="">
-                    <span>0</span></button>
-                <a class="fw500" href="#">
-                    <img class="cw30img" src="{{ asset('front/media/icons/user.svg') }}" alt="user">
-                </a>
+                @auth
+                    <a href="{{ route('front.wishlist') }}">
+                        <img class="cw30img" src="{{ asset('front/media/icons/heart.svg') }}" alt="">
+                        @if ($wishlistCount > 0)
+                            <span class="badge">{{ $wishlistCount }}</span>
+                        @endif
+                    </a>
+                    <button class="cart">
+                        <img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}" alt="">
+                        <span>{{ $cartCount }}</span>
+                    </button>
+                    <div class="drop user-menu">
+                        <a class="fw500" href="#">
+                            <img class="cw30img" src="{{ asset('front/media/icons/user.svg') }}" alt="user">
+                        </a>
+                        <span class="dropMenu">
+                            <span class="user-name">{{ auth()->user()->name }}</span>
+                            <a href="{{ route('front.cart') }}">{{ __('front.my_cart') }}</a>
+                            <a href="{{ route('front.wishlist') }}">{{ __('front.my_wishlist') }}</a>
+                            <form action="{{ route('front.logout') }}" method="POST">
+                                @csrf
+                                <button type="submit">{{ __('front.logout') }}</button>
+                            </form>
+                        </span>
+                    </div>
+                @else
+                    <a href="{{ route('front.wishlist') }}">
+                        <img class="cw30img" src="{{ asset('front/media/icons/heart.svg') }}" alt="">
+                    </a>
+                    <a href="{{ route('front.cart') }}" class="cart">
+                        <img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}" alt="">
+                        <span>0</span>
+                    </a>
+                    <a class="fw500" href="{{ route('front.login') }}">
+                        <img class="cw30img" src="{{ asset('front/media/icons/user.svg') }}" alt="user">
+                    </a>
+                @endauth
                 <div class="drop">
                     <a href="#">
                         <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt="">
@@ -77,10 +145,12 @@
                     </a>
                     <span class="dropMenu">
                         <a href="{{ route('lang.switch', 'en') }}">
-                            <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt=""> EN
+                            <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt="">
+                            EN
                         </a>
                         <a href="{{ route('lang.switch', 'ar') }}">
-                            <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt=""> AR
+                            <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt="">
+                            AR
                         </a>
                     </span>
                 </div>

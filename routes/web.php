@@ -33,9 +33,8 @@ Route::get('/change-lang/{lang}', function ($lang) {
 Route::group(['as' => 'front.'], function () {
     Route::get('/', HomeController::class)->name('index');
 
-
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    // Route::get('/Products/{slug}', [ProductController::class, 'show'])->name('Products.show');
+    // Products
+    Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
     Route::get('/about', function () {
         return view('front.about');
@@ -49,6 +48,35 @@ Route::group(['as' => 'front.'], function () {
     Route::post('/wholesale', [WholesaleController::class, 'store'])->name('wholesale.store');
     //shop
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+
+    // Auth Routes (Guest only)
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [\App\Http\Controllers\Front\AuthController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [\App\Http\Controllers\Front\AuthController::class, 'login']);
+        Route::get('/register', [\App\Http\Controllers\Front\AuthController::class, 'showRegisterForm'])->name('register');
+        Route::post('/register', [\App\Http\Controllers\Front\AuthController::class, 'register']);
+    });
+
+    // Auth Routes (Authenticated only)
+    Route::middleware('auth')->group(function () {
+        Route::post('/logout', [\App\Http\Controllers\Front\AuthController::class, 'logout'])->name('logout');
+
+        // Cart routes
+        Route::get('/cart', [\App\Http\Controllers\Front\CartController::class, 'index'])->name('cart');
+        Route::post('/cart', [\App\Http\Controllers\Front\CartController::class, 'store'])->name('cart.store');
+        Route::patch('/cart/{cart}', [\App\Http\Controllers\Front\CartController::class, 'update'])->name('cart.update');
+        Route::delete('/cart/{cart}', [\App\Http\Controllers\Front\CartController::class, 'destroy'])->name('cart.destroy');
+        Route::delete('/cart-clear', [\App\Http\Controllers\Front\CartController::class, 'clear'])->name('cart.clear');
+
+        // Wishlist routes
+        Route::get('/wishlist', [\App\Http\Controllers\Front\WishlistController::class, 'index'])->name('wishlist');
+        Route::post('/wishlist/toggle', [\App\Http\Controllers\Front\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+        Route::delete('/wishlist/{wishlist}', [\App\Http\Controllers\Front\WishlistController::class, 'destroy'])->name('wishlist.destroy');
+        Route::post('/wishlist/{wishlist}/move-to-cart', [\App\Http\Controllers\Front\WishlistController::class, 'moveToCart'])->name('wishlist.moveToCart');
+
+        // Reviews (authenticated only)
+        Route::post('/products/{product}/review', [ProductController::class, 'storeReview'])->name('products.review');
+    });
 });
 
 
@@ -105,4 +133,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:admi
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update', 'destroy']);
 });
 
-Auth::routes(['register' => false, 'login' => true, 'logout' => true, 'reset' => false, 'verify' => false]);
+// Admin Auth Routes (for admin login)
+Route::group(['prefix' => 'admin'], function () {
+    Auth::routes(['register' => false, 'login' => true, 'logout' => true, 'reset' => false, 'verify' => false]);
+});

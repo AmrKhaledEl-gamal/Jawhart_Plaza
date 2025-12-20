@@ -103,13 +103,20 @@ class ShopController extends Controller
             $q->where('is_active', true)->orWhereNull('is_active');
         })->max('price') ?? 0) + 10;
 
+        // Get wishlist product IDs for authenticated users
+        $wishlistIds = [];
+        if (auth()->check()) {
+            $wishlistIds = \App\Models\Wishlist::where('user_id', auth()->id())->pluck('product_id')->toArray();
+        }
+
         return view('front.shop.index', compact(
             'products',
             'categories',
             'colors',
             'sizes',
             'minProductPrice',
-            'maxProductPrice'
+            'maxProductPrice',
+            'wishlistIds'
         ));
     }
 }

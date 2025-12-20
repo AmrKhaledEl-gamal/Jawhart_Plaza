@@ -21,11 +21,16 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Category::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
     public function variations()
     {
         return $this->hasMany(ProductAttributeValue::class);
     }
+
     public function variants()
     {
         return $this->hasMany(ProductVariant::class);
