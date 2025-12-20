@@ -17,13 +17,17 @@
         $faviconPath = $settings->site_favicon ?? null;
     @endphp
 
-    <link rel="icon" href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}" type="image/x-icon" />
-    <link rel="shortcut icon" href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}" />
-    <link rel="apple-touch-icon" href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}" />
+    <link rel="icon" href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}"
+        type="image/x-icon" />
+    <link rel="shortcut icon"
+        href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}" />
+    <link rel="apple-touch-icon"
+        href="{{ $faviconPath ? asset('storage/' . $faviconPath) : asset('front/media/tap-icon.svg') }}" />
     <meta name="color-scheme" content="light only">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css">
     <link rel="stylesheet" href="{{ asset('front/js/swiper-bundle.min.css') }}">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     @if (app()->getLocale() == 'ar')
         <link rel="stylesheet" href="{{ asset('front/arscss/style.css') }}">
     @else
@@ -89,19 +93,23 @@
                 $logoPath = $settings->site_logo ?? null;
             @endphp
             <div class="footerLogo">
-                <img src="{{ $logoPath ? asset('storage/' . $logoPath) : asset('front/media/logo.png') }}" alt="logo">
+                <img src="{{ $logoPath ? asset('storage/' . $logoPath) : asset('front/media/logo.png') }}"
+                    alt="logo">
                 <div class="aboutText colorfff">
                     <p>{{ $metaDesc }}</p>
                 </div>
                 <div class="media">
                     @if (!empty($settings->facebook))
-                        <a href="{{ $settings->facebook }}" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="{{ $settings->facebook }}" target="_blank" rel="noopener"><i
+                                class="fa-brands fa-facebook-f"></i></a>
                     @endif
                     @if (!empty($settings->instagram))
-                        <a href="{{ $settings->instagram }}" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="{{ $settings->instagram }}" target="_blank" rel="noopener"><i
+                                class="fa-brands fa-instagram"></i></a>
                     @endif
                     @if (!empty($settings->whatsapp))
-                        <a href="{{ $settings->whatsapp }}" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="{{ $settings->whatsapp }}" target="_blank" rel="noopener"><i
+                                class="fa-brands fa-whatsapp"></i></a>
                     @endif
                 </div>
             </div>
@@ -109,42 +117,51 @@
                 <div class="linkGroup">
                     <h2>helpful link</h2>
                     <ul>
-                        <li><a href="./index.html"><img src="./media/icons/footerLink.svg" alt=""> Home </a>
+                        <li><a href="./index.html"><img src="{{ asset('front/media/icons/footerLink.svg') }}"
+                                    alt=""> Home </a>
                         </li>
-                        <li><a href="./enpages/about.html"><img src="./media/icons/footerLink.svg" alt=""> About
+                        <li><a href="{{ route('front.about') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> About
                                 Us </a></li>
-                        <li><a href="./enpages/shop.html"><img src="./media/icons/footerLink.svg" alt="">
+                        <li><a href="{{ route('front.products.index') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt="">
                                 shop</a></li>
-                        <li><a href="./enpages/contact.html"><img src="./media/icons/footerLink.svg" alt="">
+                        <li><a href="{{ route('front.contact.index') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt="">
                                 contact us </a></li>
                     </ul>
                 </div>
                 <div class="linkGroup">
                     <h2>Customer Area</h2>
                     <ul>
-                        <li><a href="./enpages/faq.html"><img src="./media/icons/footerLink.svg" alt=""> FAQs
+                        <li><a href="./enpages/faq.html"><img src="{{ asset('front/media/icons/footerLink.svg') }}"
+                                    alt=""> FAQs
                             </a></li>
-                        <li><a href="./enpages/buying-guide.html"><img src="./media/icons/footerLink.svg"
-                                    alt=""> Buying Guide </a>
+                        <li><a href="./enpages/buying-guide.html"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> Buying Guide
+                            </a>
                         </li>
-                        <li><a href="./enpages/delivery-information.html"><img src="./media/icons/footerLink.svg"
-                                    alt=""> Delivery
+                        <li><a href="./enpages/delivery-information.html"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> Delivery
                                 Information</a></li>
-                        <li><a href="./enpages/track-my-order.html"><img src="./media/icons/footerLink.svg"
-                                    alt=""> Track my order
+                        <li><a href="./enpages/track-my-order.html"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> Track my
+                                order
                             </a></li>
-                        <li><a href="./enpages/wholesale.html"><img src="./media/icons/footerLink.svg" alt="">
+                        <li><a href="{{ route('front.wholesale.index') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt="">
                                 wholesale </a></li>
                     </ul>
                 </div>
                 <div class="linkGroup">
                     <h2>store policies</h2>
                     <ul>
-                        <li><a href="./enpages/privacy-policy.html"><img src="./media/icons/footerLink.svg"
-                                    alt=""> privacy & policy
+                        <li><a href="./enpages/privacy-policy.html"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> privacy &
+                                policy
                             </a></li>
-                        <li><a href="./enpages/terms-conditions.html"><img src="./media/icons/footerLink.svg"
-                                    alt=""> terms &
+                        <li><a href="./enpages/terms-conditions.html"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> terms &
                                 conditions </a></li>
                     </ul>
                 </div>
@@ -160,6 +177,7 @@
     <script>
         AOS.init();
     </script>
+    @yield('scripts')
 </body>
 
 </html>

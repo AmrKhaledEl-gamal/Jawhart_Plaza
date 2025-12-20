@@ -1,76 +1,54 @@
 @extends('front.layouts.app')
 @section('content')
-    <main class="innerPage">
-        <header>
-            <span class="heroOverlay"><img src="{{ asset('front/images/innerPageBanner.png') }}" alt="banner"></span>
-            <h1 class="intro underline" data-aos="zoom-in-up">من نحن</h1>
-        </header>
+    <!-- Hero Section -->
+    <div class="home hnpb">
+        <img class="homeImg" src="{{ asset('front/media/home.png') }}" alt="">
 
+        <div class="box ktx z2">
+            <h1>{{ __('front.who_are_we') }}</h1>
 
-        <section class="whoWe">
+            <p>
+                {{ __('front.about_hero_description') }}
+            </p>
 
-            <div class="container">
-                <article class="whoWeImg" data-aos="fade-left">
-                    <img src="{{ $about->getFirstMediaUrl('about_images') ?: '' }}" alt="who we" />
-                </article>
-                <article class="heroIntro" data-aos="fade-right" data-aos-delay="300">
-                    <h2>مطاحن ومحامص الضياء </h2>
+            <a href="{{ route('front.products.index') }}" class="store mt20">
+                {{ __('front.shop_now') }}
+            </a>
+        </div>
+    </div>
+    <!-- About Section -->
+    <div class="box about p100-20">
+        <div class="aboutText aboutPageText">
+            <h1 class="tru">
+                {{ __('front.about_title') }}
+            </h1>
 
-                    {!! $about->about !!}
+            <article>
+                <p>
+                    {!! __('front.about_description') !!}
+                </p>
+            </article>
+        </div>
 
-                    <button type="button" class="contact">
+        <img class="aImg" src="{{ asset('front/media/logo.png') }}" alt="">
+    </div>
 
+    <!-- Banner -->
+    <div class="home pageBanner pageBanner2">
+        <img class="homeImg" src="{{ asset('front/media/b2.png') }}" alt="">
 
-                    </button>
-                </article>
-            </div>
-        </section>
+        <div class="box ktx z2">
+            <h1>
+                {{ __('front.about_banner_title') }}
+            </h1>
 
+            <p>
+                {{ __('front.about_banner_description') }}
+            </p>
 
-        <section class="ourVision">
-            <div class="container">
-                <article>
-
-
-                    <h2 class="intro underline" data-aos="fade-up">رؤيتنــــا</h2>
-
-                    {!! $about->vision !!}
-
-                </article>
-            </div>
-        </section>
-
-        <section class="ourMission">
-            <h2 class="intro underline" data-aos="fade-up">قيمنــــا</h2>
-            <div class="container">
-                <article>
-                    <h2>الجودة أولاً</h2>
-                    <p>نلتزم بتقديم منتجات بمعايير عالية في كل مرحلة من مراحل الإنتاج.</p>
-                </article>
-                <article>
-                    <h2>
-                        الشفافية والثقة
-                    </h2>
-                    <p>نبني علاقتنا مع عملائنا على الصدق والمصداقية في كل تعامل.</p>
-                </article>
-                <article>
-                    <h2>
-                        الطزاجة والنكهة
-                    </h2>
-                    <p>نحرص على أن تصل منتجاتنا دائمًا بأفضل جودة ونكهة.</p>
-                </article>
-                <article class="longerGrid">
-                    <h2>
-                        التميز في الخدمة
-                    </h2>
-                    <p>نضع رضا عملائنا في مقدمة أولوياتنا، ونسعى لتجربة شراء تفوق التوقعات.</p>
-                </article>
-                <article class="longerGrid">
-                    <h2>
-                        الاستمرارية والتطوير
-                    </h2>
-                    <p>نؤمن أن النجاح لا يتحقق إلا بالتجدد والابتكار المستمر.</p>
-                </article>
-            </div>
-        </section>
-    @endsection
+            <a class="store mt20" href="#">
+                {{ __('front.order_now') }}
+            </a>
+        </div>
+    </div>
+@endsection

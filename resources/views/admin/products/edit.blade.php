@@ -31,6 +31,10 @@
                     <label>Slug</label>
                     <input type="text" name="slug" class="form-control" value="{{ $product->slug }}">
                 </div>
+                <div class="col-md-6 mb-20">
+                    <label>price</label>
+                    <input type="text" name="price" class="form-control" value="{{ $product->price }}">
+                </div>
 
                 <div class="col-md-6 mb-20">
                     <label>Category</label>
@@ -49,11 +53,19 @@
                     <input type="number" step="0.01" name="price" class="form-control" value="{{ $product->price }}">
                 </div>
 
-                <div class="col-md-6 mb-20 d-flex align-items-center">
+                <div class="col-md-3 mb-20 d-flex align-items-center">
                     <div class="form-check form-switch mt-4">
                         <input class="form-check-input" type="checkbox" name="is_active"
                             {{ $product->is_active ? 'checked' : '' }}>
                         <label class="form-check-label">Active</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-20 d-flex align-items-center">
+                    <div class="form-check form-switch mt-4">
+                        <input class="form-check-input" type="checkbox" name="is_top_selling"
+                            {{ $product->is_top_selling ? 'checked' : '' }}>
+                        <label class="form-check-label">Top Selling</label>
                     </div>
                 </div>
 
@@ -64,11 +76,11 @@
                     <div class="mt-2 d-flex align-items-center gap-3">
                         @php($currentImg = $product->getFirstMediaUrl('products'))
                         @if (!empty($currentImg))
-                            <img id="product-image-preview" src="{{ $currentImg }}" alt="product" width="90" height="90"
-                                class="rounded" style="object-fit: cover;">
+                            <img id="product-image-preview" src="{{ $currentImg }}" alt="product" width="90"
+                                height="90" class="rounded" style="object-fit: cover;">
                         @else
-                            <img id="product-image-preview" src="" alt="preview" width="90" height="90" class="rounded d-none"
-                                style="object-fit: cover;">
+                            <img id="product-image-preview" src="" alt="preview" width="90" height="90"
+                                class="rounded d-none" style="object-fit: cover;">
                         @endif
                         <small class="text-muted">Choose an image to preview before saving.</small>
                     </div>
@@ -94,7 +106,8 @@
                     <label class="form-label">Color</label>
                     <div class="d-flex flex-wrap gap-2">
                         @foreach ($colors as $color)
-                            <label class="variant-color-option d-inline-flex align-items-center gap-2 border radius-8 px-8 py-6"
+                            <label
+                                class="variant-color-option d-inline-flex align-items-center gap-2 border radius-8 px-8 py-6"
                                 style="cursor:pointer;">
                                 <input type="radio" name="color_id" value="{{ $color->id }}" required>
                                 <span title="{{ $color->code }}"
@@ -113,9 +126,9 @@
                     </select>
                 </div>
 
-                <div class="col-md-2">
+                {{-- <div class="col-md-2">
                     <input type="number" step="0.01" name="price" class="form-control" placeholder="Price" required>
-                </div>
+                </div> --}}
 
                 <div class="col-md-2">
                     <input type="number" name="stock" class="form-control" placeholder="Stock" required>
@@ -135,7 +148,7 @@
                     <tr>
                         <th>Color</th>
                         <th>Size</th>
-                        <th>Price</th>
+                        {{-- <th>Price</th> --}}
                         <th>Stock</th>
                         <th class="text-center">Action</th>
                     </tr>
@@ -148,10 +161,11 @@
                                     style="display:inline-block;width:24px;height:24px;background-color:{{ $variant->color->code }};border-radius:50%;border:1px solid #ccc;"></span>
                             </td>
                             <td>{{ $variant->size->name }}</td>
-                            <td>{{ $variant->price }}</td>
+                            {{-- <td>{{ $variant->price }}</td> --}}
                             <td>{{ $variant->stock }}</td>
                             <td class="text-center">
-                                <button type="button" class="delete-variant bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px
+                                <button type="button"
+                                    class="delete-variant bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-40-px h-40-px
                                     d-inline-flex justify-content-center align-items-center rounded-circle border-0"
                                     data-id="{{ $variant->id }}" title="Delete">
                                     <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
@@ -185,8 +199,8 @@
 
     <script>
         /* =======================
-                   ADD VARIANT (AJAX)
-                ======================= */
+                                           ADD VARIANT (AJAX)
+                                        ======================= */
         // Highlight selected color swatch
         function syncSelectedColorSwatch() {
             document.querySelectorAll('.variant-color-option').forEach((label) => label.classList.remove('selected'));

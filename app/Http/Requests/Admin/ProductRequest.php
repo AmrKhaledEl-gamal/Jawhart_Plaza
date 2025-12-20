@@ -27,6 +27,7 @@ class ProductRequest extends FormRequest
     {
         $this->merge([
             'is_active' => $this->boolean('is_active'),
+            'is_top_selling' => $this->boolean('is_top_selling'),
             'description' => $this->description ?? [],
         ]);
     }
@@ -57,6 +58,7 @@ class ProductRequest extends FormRequest
             'discount_price' => ['nullable', 'numeric', 'min:0', 'lt:price'],
             // 'stock' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
+            'is_top_selling' => ['boolean'],
             'image' => ['nullable', 'image', 'max:4096'],
         ];
     }

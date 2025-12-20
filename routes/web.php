@@ -13,8 +13,12 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WholesaleController as AdminWholesaleController;
+use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductController;
+use App\Http\Controllers\Front\ShopController;
+use App\Http\Controllers\Front\WholesaleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +37,18 @@ Route::group(['as' => 'front.'], function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     // Route::get('/Products/{slug}', [ProductController::class, 'show'])->name('Products.show');
 
+    Route::get('/about', function () {
+        return view('front.about');
+    })->name('about');
+
+    //contact us
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+    //wholesale
+    Route::get('/wholesale', [WholesaleController::class, 'index'])->name('wholesale.index');
+    Route::post('/wholesale', [WholesaleController::class, 'store'])->name('wholesale.store');
+    //shop
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 });
 
 
@@ -71,9 +87,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:admi
     // Contacts
     Route::resource('contacts', AdminContactController::class);
 
+    // wholesales
+    Route::resource('wholesales', AdminWholesaleController::class);
+
     // Attributes
     Route::resource('colors', ColorController::class)->except('show');
     Route::resource('sizes', SizeController::class)->except('show');
+
 
     // Categories
     Route::resource('categories', CategoryController::class);

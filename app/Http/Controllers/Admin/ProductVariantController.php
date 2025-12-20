@@ -14,7 +14,7 @@ class ProductVariantController extends Controller
         $data = $request->validate([
             'color_id' => ['required', 'exists:colors,id'],
             'size_id'  => ['required', 'exists:sizes,id'],
-            'price'    => ['required', 'numeric', 'min:0'],
+            // 'price'    => ['required', 'numeric', 'min:0'],
             'stock'    => ['required', 'integer', 'min:0'],
         ]);
 
@@ -37,7 +37,7 @@ class ProductVariantController extends Controller
                 'id'         => $variant->id,
                 'color_code' => $variant->color->code,
                 'size'       => $variant->size->name,
-                'price'      => $variant->price,
+                // 'price'      => $variant->price,
                 'stock'      => $variant->stock,
             ]
         ], 201);

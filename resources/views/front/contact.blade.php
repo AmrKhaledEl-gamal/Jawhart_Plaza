@@ -1,85 +1,59 @@
 @extends('front.layouts.app')
 @section('content')
-    <main class ="innerPage">
-        <header>
-            <span class="heroOverlay"><img src="{{ asset('front/images/innerPageBanner.png') }}" alt="banner"></span>
-            <h1 class="intro underline" data-aos="zoom-in-up">تواصل معنا </h1>
-        </header>
+    <div class="home pageBanner pageBanner2 pageBanner4">
+        <img class="pageBannerImage" src="../media/contact.png" alt="">
+        <div class="box ktx z2">
+            <h1>
+                Have a question or a special request?
+            </h1>
+            <p>
+                We're here to assist you! Reach out to us, and we'll get back to you as soon as possible. </p>
+        </div>
+    </div>
 
 
-
-        <section class="contact" id="contact">
-            <h2 class="intro underline" data-aos="fade-up">تواصل معنا بكل سهولة</h2>
-            <div class="container">
-                <form action="{{ route('front.contact.store') }}" method="POST" data-aos="fade-left">
-                    @csrf
-
-                    <div class="inputHolder">
-                        <label for="full_name">الأسم الكامل :</label>
-                        <input type="text" id="full_name" name="full_name" autocomplete="name" placeholder="الأسم الكامل"
-                            required />
-                    </div>
-
-                    <div class="inputHolder">
-                        <label for="email">البريد الالكتروني :</label>
-                        <input type="email" id="email" name="email" autocomplete="email"
-                            placeholder="البريد الالكتروني" required />
-                    </div>
-
-                    <div class="inputHolder">
-                        <label for="phone_number">رقم الهاتف :</label>
-                        <input type="tel" id="phone_number" name="phone_number" autocomplete="cc-number"
-                            placeholder="رقم الهاتف" required />
-                    </div>
-
-                    <div class="inputHolder">
-                        <label for="message">محتوى الرسالة :</label>
-                        <textarea name="message" id="message" placeholder="الرسالة" required></textarea>
-                    </div>
-
-                    <button type="submit" class="readMore">
-                        ارسال
-                    </button>
-                </form>
-
-
-                <div class="contactInfo" data-aos="fade-right" data-aos-delay="300">
-                    <h3>معلومات التواصل :</h3>
-                    <article>
-                        <a href="tel:{{ $settings->phone_number }}" class="contactHandle">
-                            <span class="contactIcon">
-                                <i class="fa-solid fa-phone-volume"></i>
-                            </span> تواصل عبر الهاتف
-                        </a>
-                        <a href="{{ $settings->whatsapp }}" class="contactHandle">
-                            <span class="contactIcon">
-                                <i class="fa-brands fa-whatsapp"></i>
-                            </span> تواصل عبر الواتساب
-                        </a>
-                        <a href="mailto:{{ $settings->email }}" class="contactHandle">
-                            <span class="contactIcon">
-                                <i class="fa-solid fa-envelope"></i>
-                            </span> البريد الالكتروني : {{ $settings->email }}
-                        </a>
-
-
-                    </article>
+    <div class="contactPage">
+        <div class="box contact">
+            <form action="{{ route('front.contact.store') }}" method="POST" data-aos="fade-left"
+                style="
+                    PADDING: 0;
+                    WIDTH: 50%;
+                    display: FLEX;
+                    FLEX-DIRECTION: column;
+                    gap: 20px;">
+                @csrf
+                <div class="input">
+                    <span>Full Name:</span>
+                    <input type="text" name="name" placeholder="Full Name">
                 </div>
+                <div class="input">
+                    <span>Email Address:</span>
+                    <input type="email" name="email" placeholder="Email Address">
+                </div>
+                <div class="input">
+                    <span>Phone Number:</span>
+                    <input type="tel" name="phone" placeholder="Phone number with country code">
+                </div>
+                <div class="input">
+                    <span>Message Content:</span>
+                    <textarea name="message" placeholder="Message Content"></textarea>
+                </div>
+                <button class="store mla">Send</button>
+            </form>
+            <div class="infodata">
+                <h1>Contact Details :</h1>
+                <ul>
+                    <li>
+                        <img src="{{ asset('front/media/icons/call.png') }}" alt="">
+                        <a href="tel:{{ $settings->phone_number }}" target="_blank">{{ $settings->phone_number }}</a>
+                    </li>
+                    <li>
+                        <img src="{{ asset('front/media/icons/mail.png') }}" alt="">
+                        <a href="mailto:info@jawhartplaza.com" target="_blank">Email : info@jawhartplaza.com</a>
+                    </li>
+                </ul>
             </div>
-        </section>
-    @endsection
-    @section('js')
-        <script defer>
-            const telInput = document.getElementById("phone_number");
+        </div>
 
-            // Block non-numeric keypress
-            telInput.addEventListener("keypress", (e) => {
-                if (!/[0-9]/.test(e.key)) e.preventDefault();
-            });
-
-            // Clean pasted text or mobile input
-            telInput.addEventListener("input", () => {
-                telInput.value = telInput.value.replace(/\D/g, "");
-            });
-        </script>
-    @endsection
+    </div>
+@endsection

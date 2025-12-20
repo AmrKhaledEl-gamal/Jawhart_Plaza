@@ -28,4 +28,10 @@ return [
     'subscribe_desc' => 'Subscribe to our new polo shirt and receive exclusive offers every week',
     'enter_email' => 'Enter Your Email..',
     'subscribe' => 'Subscribe',
+    'who_are_we' => 'who are we?',
+    'about_hero_description' => 'We’re delighted to have you at Johar Plaza, where we bring you the latest trends and high-quality fashion to meet your style needs. Enjoy a unique shopping experience with us!',
+    'about_title' => 'JAWHART PLAZA uniform',
+    'about_description' => 'At <span>Jawhart Plaza</span>, we offer the latest fashion trends for men and women, focusing on quality and comfort. Our carefully selected designs and high-quality materials provide stylish and practical options for every occasion. <br> Thank you for choosing <span>Jawhart Plaza</span>, where beauty begins.',
+    'about_banner_title' => 'More than just a store, we’re a lifestyle!',
+    'about_banner_description' => 'Enjoy a unique shopping experience.',
 ];

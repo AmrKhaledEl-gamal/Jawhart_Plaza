@@ -10,7 +10,8 @@
 <nav>
     <div class="box f-s">
         <a href="{{ route('front.index') }}" class="logo">
-            <img src="{{ $logoPath ? asset('storage/' . $logoPath) : asset('front/media/logo.png') }}" alt="{{ $siteName }}">
+            <img src="{{ $logoPath ? asset('storage/' . $logoPath) : asset('front/media/logo.png') }}"
+                alt="{{ $siteName }}">
         </a>
         <div class="links">
             <div class="ls">
@@ -20,7 +21,7 @@
                     <li><a class="link" href="{{ asset('front/enpages/men.html') }}">Men</a></li>
                     <li><a class="link" href="{{ asset('front/enpages/women.html') }}"> Women</a></li>
                     <li><a class="link" href="{{ asset('front/enpages/kids.html') }}"> kids</a></li>
-                    <li><a class="link" href="{{ asset('front/enpages/shop.html') }}"> Shop</a></li>
+                    <li><a class="link" href="{{ route('front.shop.index') }}"> Shop</a></li>
                     <li>
                         <form class="search">
                             <input type="search" placeholder="Explore">
@@ -46,10 +47,12 @@
                         </a>
                         <span class="dropMenu">
                             <a href="{{ route('lang.switch', 'en') }}">
-                                <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt=""> EN
+                                <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt="">
+                                EN
                             </a>
                             <a href="{{ route('lang.switch', 'ar') }}">
-                                <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt=""> AR
+                                <img class="lang" src="{{ asset('front/media/icons/language.png') }}" alt="">
+                                AR
                             </a>
                         </span>
                     </div>

@@ -144,6 +144,20 @@
                     <span>Orders</span>
                 </a>
             </li>
+            {{-- contacts --}}
+            <li>
+                <a href="{{ route('admin.contacts.index') }}">
+                    <iconify-icon icon="mdi:clipboard-list-outline" class="menu-icon"></iconify-icon>
+                    <span>contacts</span>
+                </a>
+            </li>
+            {{-- wholesales --}}
+            <li>
+                <a href="{{ route('admin.wholesales.index') }}">
+                    <iconify-icon icon="mdi:clipboard-list-outline" class="menu-icon"></iconify-icon>
+                    <span>wholesales</span>
+                </a>
+            </li>
 
             {{-- Coupons --}}
             <li class="dropdown">
@@ -177,7 +191,8 @@
                 <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.faqs.index') }}">
-                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
+                            <iconify-icon icon="ri:list-unordered"
+                                class="circle-icon text-primary-600"></iconify-icon>
                             FAQ List
                         </a>
                     </li>
@@ -192,12 +207,12 @@
             </li>
 
             {{-- Carts --}}
-            <li>
+            {{-- <li>
                 <a href="{{ route('admin.carts.index') }}">
                     <iconify-icon icon="mdi:cart-outline" class="menu-icon"></iconify-icon>
                     <span>Carts</span>
                 </a>
-            </li>
+            </li> --}}
 
             {{-- Settings --}}
             <li class="dropdown">
@@ -208,7 +223,8 @@
                 <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.settings.index') }}">
-                            <iconify-icon icon="mdi:tune-vertical" class="circle-icon text-primary-600"></iconify-icon>
+                            <iconify-icon icon="mdi:tune-vertical"
+                                class="circle-icon text-primary-600"></iconify-icon>
                             General Settings
                         </a>
                     </li>

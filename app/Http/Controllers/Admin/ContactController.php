@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+
     public function index()
     {
-        $messages = Contact::latest()->paginate(15);
-        return view('admin.contacts.index', compact('messages'));
+        $contacts = Contact::latest()->paginate(15);
+        return view('admin.contacts.index', compact('contacts'));
     }
 
 

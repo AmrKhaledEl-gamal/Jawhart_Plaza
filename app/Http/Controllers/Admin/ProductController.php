@@ -38,6 +38,7 @@ class ProductController extends Controller
                 'price',
                 'category_id',
                 'is_active',
+                'is_top_selling',
             ])
         );
 
@@ -73,6 +74,7 @@ class ProductController extends Controller
                 'price',
                 'category_id',
                 'is_active',
+                'is_top_selling',
             ])
         );
 
