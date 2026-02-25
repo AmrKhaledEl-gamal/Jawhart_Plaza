@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
         $locale = app()->getLocale();
         $siteName = $settings->site_name ?? config('app.name');
@@ -62,26 +63,19 @@
                             <img src="{{ $cartItem->product->getFirstMediaUrl('products') ?: asset('front/media/placeholder.png') }}"
                                 alt="{{ $cartItem->product->name }}">
                             <div class="itdd">
-                                <h3>{{ Str::limit($cartItem->product->name, 20) }}</h3>
+                                <h3>{{ $cartItem->product->name }}</h3>
                                 <span>{{ number_format($cartItem->product->discount_price ?? $cartItem->product->price, 2) }}
-                                    {{ __('front.currency') }}</span>
-                                @if ($cartItem->variant)
-                                    <small>
-                                        @if ($cartItem->variant->size)
-                                            {{ $cartItem->variant->size->name }}
-                                        @endif
-                                        @if ($cartItem->variant->color)
-                                            - {{ $cartItem->variant->color->name }}
-                                        @endif
-                                        x{{ $cartItem->quantity }}
-                                    </small>
-                                @endif
+                                    {{ __('front.currency') }} <strong style="color: #9f7d51; margin-left:8px;"> x
+                                        {{ $cartItem->quantity }}</strong></span>
                             </div>
                             <form action="{{ route('front.cart.destroy', $cartItem) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="remove-btn"><i class="fa-regular fa-trash-can"></i></button>
+                                <button type="submit" class="remove-btn"
+                                    style="background:none; border:none; padding:0; cursor:pointer;">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
                             </form>
                         </div>
                     @empty
@@ -153,8 +147,8 @@
                 <div class="linkGroup">
                     <h2>helpful link</h2>
                     <ul>
-                        <li><a href="./index.html"><img src="{{ asset('front/media/icons/footerLink.svg') }}"
-                                    alt=""> Home </a>
+                        <li><a href="{{ route('front.index') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> Home </a>
                         </li>
                         <li><a href="{{ route('front.about') }}"><img
                                     src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> About
@@ -170,17 +164,19 @@
                 <div class="linkGroup">
                     <h2>Customer Area</h2>
                     <ul>
-                        <li><a href="./enpages/faq.html"><img src="{{ asset('front/media/icons/footerLink.svg') }}"
-                                    alt=""> FAQs
+                        <li><a href="{{ route('front.faq') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt="">
+                                {{ __('front.faqs') }}
                             </a></li>
-                        <li><a href="./enpages/buying-guide.html"><img
-                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> Buying Guide
+                        <li><a href="{{ route('front.buying-guide') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt="">
+                                {{ __('front.buying_guide') }}
                             </a>
                         </li>
-                        <li><a href="./enpages/delivery-information.html"><img
-                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> Delivery
+                        <li><a {{-- href="{{ route('front.delivery-information') }}" --}}><img src="{{ asset('front/media/icons/footerLink.svg') }}"
+                                    alt=""> Delivery
                                 Information</a></li>
-                        <li><a href="./enpages/track-my-order.html"><img
+                        <li><a href="{{ route('front.track-order.index') }}"><img
                                     src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> Track my
                                 order
                             </a></li>
@@ -192,13 +188,13 @@
                 <div class="linkGroup">
                     <h2>store policies</h2>
                     <ul>
-                        <li><a href="./enpages/privacy-policy.html"><img
-                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> privacy &
-                                policy
+                        <li><a href="{{ route('front.privacy-policy') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt="">
+                                {{ __('front.privacy_policy') }}
                             </a></li>
-                        <li><a href="./enpages/terms-conditions.html"><img
-                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt=""> terms &
-                                conditions </a></li>
+                        <li><a href="{{ route('front.terms-conditions') }}"><img
+                                    src="{{ asset('front/media/icons/footerLink.svg') }}" alt="">
+                                {{ __('front.terms_conditions') }} </a></li>
                     </ul>
                 </div>
             </div>
@@ -327,6 +323,41 @@
                 notification.remove();
             }, 3000);
         }
+
+        // Update cart badge dynamically
+        function updateCartBadge() {
+            if (!isAuthenticated) return;
+
+            fetch('/cart/count', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const badges = document.querySelectorAll('.cart-badge');
+                    badges.forEach(badge => {
+                        const currentCount = parseInt(badge.innerText || '0');
+                        if (data.count !== currentCount) {
+                            badge.style.opacity = '0';
+                            setTimeout(() => {
+                                badge.innerText = data.count;
+                                badge.style.display = data.count > 0 ? 'inline-block' : 'none';
+                                badge.style.opacity = '1';
+                            }, 300); // 300ms transition
+                        } else {
+                            badge.innerText = data.count;
+                            badge.style.display = data.count > 0 ? 'inline-block' : 'none';
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching cart count:', error));
+        }
+
+        // Trigger dynamic cart update on load
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
     </script>
 
     <style>
@@ -447,6 +478,10 @@
 
         .remove-btn:hover {
             color: #e74c3c;
+        }
+
+        .cart-badge {
+            transition: opacity 0.3s ease;
         }
     </style>
     @yield('scripts')

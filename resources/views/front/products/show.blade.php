@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <form class="formcontrol" id="add-to-cart-form">
+            <form class="formcontrol" id="add-to-cart-form" action="{{ route('front.cart.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
 
@@ -120,14 +120,7 @@
                 </div>
 
                 <div class="btns btns2 btns4">
-                    <button type="button"
-                        onclick="AddToCart({{ json_encode([
-                            'id' => $product->id,
-                            'name' => $product->name,
-                            'price' => $product->discount_price ?? $product->price,
-                            'image' => $product->getFirstMediaUrl('products'),
-                        ]) }})"
-                        {{ $totalStock <= 0 ? 'disabled' : '' }}>
+                    <button type="submit" {{ $totalStock <= 0 ? 'disabled' : '' }}>
                         {{ __('front.add_to_cart') }}
                         <img src="{{ asset('front/media/icons/bag.svg') }}" alt="">
                     </button>

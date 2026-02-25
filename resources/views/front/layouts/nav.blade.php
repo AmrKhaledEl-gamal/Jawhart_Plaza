@@ -5,14 +5,6 @@
     if (is_array($siteName)) {
         $siteName = $siteName[$locale] ?? ($siteName['en'] ?? reset($siteName));
     }
-
-    // Get cart count for authenticated users
-    $cartCount = 0;
-    $wishlistCount = 0;
-    if (auth()->check()) {
-        $cartCount = \App\Models\Cart::where('user_id', auth()->id())->sum('quantity');
-        $wishlistCount = \App\Models\Wishlist::where('user_id', auth()->id())->count();
-    }
 @endphp
 
 <nav>
@@ -52,7 +44,8 @@
                         </a>
                         <button class="cart" title="{{ __('front.my_cart') }}">
                             <img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}" alt="">
-                            <span>{{ $cartCount }}</span>
+                            <span class="cart-badge"
+                                style="{{ $cartCount == 0 ? 'display:none;' : '' }}">{{ $cartCount }}</span>
                         </button>
                         <div class="drop user-menu">
                             <a href="#" class="fw500">
@@ -60,8 +53,8 @@
                             </a>
                             <span class="dropMenu">
                                 <span class="user-name">{{ auth()->user()->name }}</span>
-                                <a href="{{ route('front.cart') }}">{{ __('front.my_cart') }}</a>
-                                <a href="{{ route('front.wishlist') }}">{{ __('front.my_wishlist') }}</a>
+                                {{-- <a href="{{ route('front.cart') }}">{{ __('front.my_cart') }}</a> --}}
+                                {{-- <a href="{{ route('front.wishlist') }}">{{ __('front.my_wishlist') }}</a> --}}
                                 <form action="{{ route('front.logout') }}" method="POST">
                                     @csrf
                                     <button type="submit">{{ __('front.logout') }}</button>
@@ -74,7 +67,7 @@
                         </a>
                         <a href="{{ route('front.cart') }}" class="cart" title="{{ __('front.my_cart') }}">
                             <img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}" alt="">
-                            <span>0</span>
+                            <span class="cart-badge" style="display:none;">0</span>
                         </a>
                         <a class="fw500" href="{{ route('front.login') }}" title="{{ __('front.sign_in') }}">
                             <img class="cw30img" src="{{ asset('front/media/icons/user.svg') }}" alt="">
@@ -110,7 +103,8 @@
                     </a>
                     <button class="cart">
                         <img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}" alt="">
-                        <span>{{ $cartCount }}</span>
+                        <span class="cart-badge"
+                            style="{{ $cartCount == 0 ? 'display:none;' : '' }}">{{ $cartCount }}</span>
                     </button>
                     <div class="drop user-menu">
                         <a class="fw500" href="#">
@@ -118,8 +112,8 @@
                         </a>
                         <span class="dropMenu">
                             <span class="user-name">{{ auth()->user()->name }}</span>
-                            <a href="{{ route('front.cart') }}">{{ __('front.my_cart') }}</a>
-                            <a href="{{ route('front.wishlist') }}">{{ __('front.my_wishlist') }}</a>
+                            {{-- <a href="{{ route('front.cart') }}">{{ __('front.my_cart') }}</a>
+                            <a href="{{ route('front.wishlist') }}">{{ __('front.my_wishlist') }}</a> --}}
                             <form action="{{ route('front.logout') }}" method="POST">
                                 @csrf
                                 <button type="submit">{{ __('front.logout') }}</button>
@@ -132,7 +126,7 @@
                     </a>
                     <a href="{{ route('front.cart') }}" class="cart">
                         <img class="cw30img" src="{{ asset('front/media/icons/bag1.svg') }}" alt="">
-                        <span>0</span>
+                        <span class="cart-badge" style="display:none;">0</span>
                     </a>
                     <a class="fw500" href="{{ route('front.login') }}">
                         <img class="cw30img" src="{{ asset('front/media/icons/user.svg') }}" alt="user">

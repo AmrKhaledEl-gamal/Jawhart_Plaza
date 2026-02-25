@@ -147,11 +147,19 @@
                                 @endif
                             </div>
                             <div class="btns">
-                                <button type="button"
-                                    onclick="AddToCart({{ json_encode(['id' => $product->id, 'name' => $product->name, 'price' => $product->price, 'image' => $product->getFirstMediaUrl('products')]) }})">
-                                    {{ __('front.add_to_cart') }}
-                                    <img src="{{ asset('front/media/icons/bag.svg') }}" alt="">
-                                </button>
+                                <form action="{{ route('front.cart.store') }}" method="POST" style="margin: 0;">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit"
+                                        style="width: 100%; border: none; background: none; padding: 0;">
+                                        <a
+                                            style="display: flex; justify-content: center; align-items: center; width: 100%; cursor: pointer;">
+                                            {{ __('front.add_to_cart') }}
+                                            <img src="{{ asset('front/media/icons/bag.svg') }}" alt="">
+                                        </a>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     @empty

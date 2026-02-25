@@ -22,12 +22,7 @@ class Cart extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id',
-        'product_id',
-        'product_variant_id',
-        'quantity',
-    ];
+    protected $guarded = [];
 
     public function user(): BelongsTo
     {

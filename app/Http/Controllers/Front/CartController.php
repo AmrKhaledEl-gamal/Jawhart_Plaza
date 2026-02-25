@@ -20,7 +20,7 @@ class CartController extends Controller
             ->get();
 
         $subtotal = $cartItems->sum(function ($item) {
-            $price = $item->product->discount_price ?? $item->product->price;
+            $price = $item->variant->price ?? $item->product->price;
             return $price * $item->quantity;
         });
 
@@ -32,19 +32,38 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
+        // Ensure user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('front.login')->with('error', __('front.please_login_first'));
+        }
+
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'product_variant_id' => 'required|exists:product_variants,id',
+            'size_id' => 'nullable|exists:sizes,id',
+            'color_id' => 'nullable|exists:colors,id',
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Check if variant has enough stock
-        $variant = ProductVariant::findOrFail($validated['product_variant_id']);
+        // Find the variant matching the selected size and color
+        $variantQuery = ProductVariant::where('product_id', $validated['product_id']);
+
+        if (!empty($validated['size_id'])) {
+            $variantQuery->where('size_id', $validated['size_id']);
+        }
+        if (!empty($validated['color_id'])) {
+            $variantQuery->where('color_id', $validated['color_id']);
+        }
+
+        $variant = $variantQuery->first();
+
+        if (!$variant) {
+            return back()->with('error', __('front.variant_not_found'));
+        }
 
         // Check if item already in cart
         $existingItem = Cart::where('user_id', Auth::id())
             ->where('product_id', $validated['product_id'])
-            ->where('product_variant_id', $validated['product_variant_id'])
+            ->where('product_variant_id', $variant->id)
             ->first();
 
         if ($existingItem) {
@@ -63,16 +82,8 @@ class CartController extends Controller
             Cart::create([
                 'user_id' => Auth::id(),
                 'product_id' => $validated['product_id'],
-                'product_variant_id' => $validated['product_variant_id'],
+                'product_variant_id' => $variant->id,
                 'quantity' => $validated['quantity'],
-            ]);
-        }
-
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => __('front.added_to_cart'),
-                'cartCount' => Cart::where('user_id', Auth::id())->sum('quantity'),
             ]);
         }
 
@@ -101,12 +112,12 @@ class CartController extends Controller
         $cart->update(['quantity' => $validated['quantity']]);
 
         if ($request->ajax()) {
-            $price = $cart->product->discount_price ?? $cart->product->price;
+            $price = $cart->variant->price ?? $cart->product->price;
             $itemTotal = $price * $cart->quantity;
 
-            $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+            $cartItems = Cart::where('user_id', Auth::id())->with(['product', 'variant'])->get();
             $subtotal = $cartItems->sum(function ($item) {
-                $price = $item->product->discount_price ?? $item->product->price;
+                $price = $item->variant->price ?? $item->product->price;
                 return $price * $item->quantity;
             });
 
@@ -114,7 +125,7 @@ class CartController extends Controller
                 'success' => true,
                 'itemTotal' => number_format($itemTotal, 2),
                 'subtotal' => number_format($subtotal, 2),
-                'cartCount' => $cartItems->sum('quantity'),
+                'cartCount' => $cartItems->count(),
             ]);
         }
 
@@ -133,9 +144,9 @@ class CartController extends Controller
         $cart->delete();
 
         if (request()->ajax()) {
-            $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
+            $cartItems = Cart::where('user_id', Auth::id())->with(['product', 'variant'])->get();
             $subtotal = $cartItems->sum(function ($item) {
-                $price = $item->product->discount_price ?? $item->product->price;
+                $price = $item->variant->price ?? $item->product->price;
                 return $price * $item->quantity;
             });
 
@@ -143,7 +154,7 @@ class CartController extends Controller
                 'success' => true,
                 'message' => __('front.item_removed'),
                 'subtotal' => number_format($subtotal, 2),
-                'cartCount' => $cartItems->sum('quantity'),
+                'cartCount' => $cartItems->count(),
             ]);
         }
 
@@ -165,5 +176,19 @@ class CartController extends Controller
         }
 
         return back()->with('success', __('front.cart_cleared'));
+    }
+
+    /**
+     * Get distinct distinct cart items count.
+     */
+    public function getCartItemCount()
+    {
+        if (!Auth::check()) {
+            return response()->json(['count' => 0]);
+        }
+
+        $count = Cart::where('user_id', Auth::id())->count();
+
+        return response()->json(['count' => $count]);
     }
 }

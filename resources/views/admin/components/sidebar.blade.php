@@ -1,5 +1,5 @@
 <aside class="sidebar">
-    <button type="button" class="sidebar-close-btn">
+    <button type="button" class="sidebar-close-btn" aria-label="Close Sidebar">
         <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
     </button>
     <div>
@@ -12,219 +12,115 @@
                 class="logo-icon">
         </a>
     </div>
+
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
-
             {{-- Dashboard --}}
             <li>
-                <a href="{{ route('admin.index') }}">
+                <a href="{{ route('admin.index') }}" aria-label="Dashboard">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
             </li>
 
-            {{-- Banners --}}
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:image-outline" class="menu-icon"></iconify-icon>
-                    <span>Banners</span>
-                </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="{{ route('admin.banners.index') }}">
-                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            Banner List
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.banners.create') }}">
-                            <iconify-icon icon="mdi:plus-circle-outline"
-                                class="circle-icon text-primary-600"></iconify-icon>
-                            Add Banner
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            <li class="sidebar-menu-group-title">Menu</li>
 
-            {{-- Products --}}
+            {{-- Catalog Management Group --}}
             <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:package-variant-closed" class="menu-icon"></iconify-icon>
-                    <span>Products</span>
+                <a href="javascript:void(0)" aria-expanded="false" aria-controls="catalog-submenu">
+                    <iconify-icon icon="mdi:store-outline" class="menu-icon"></iconify-icon>
+                    <span>Catalog Management</span>
                 </a>
-                <ul class="sidebar-submenu">
-                    <li>
-                        <a href="{{ route('admin.products.index') }}">
-                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            Product List
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.products.create') }}">
-                            <iconify-icon icon="mdi:package-variant-closed" class="menu-icon"></iconify-icon>
-                            Add Product
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            {{-- Categories --}}
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:shape-outline" class="menu-icon"></iconify-icon>
-                    <span>Categories</span>
-                </a>
-                <ul class="sidebar-submenu">
+                <ul class="sidebar-submenu" id="catalog-submenu">
                     <li>
                         <a href="{{ route('admin.categories.index') }}">
-                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            Category List
+                            <iconify-icon icon="mdi:shape-outline" class="circle-icon text-primary-600"></iconify-icon>
+                            Categories
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.categories.create') }}">
-                            <iconify-icon icon="mdi:plus-circle-outline"
+                        <a href="{{ route('admin.products.index') }}">
+                            <iconify-icon icon="mdi:package-variant-closed"
                                 class="circle-icon text-primary-600"></iconify-icon>
-                            Add Category
+                            Products
                         </a>
                     </li>
-                </ul>
-            </li>
-
-            {{-- Sizes --}}
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:ruler" class="menu-icon"></iconify-icon>
-                    <span>Sizes</span>
-                </a>
-                <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.sizes.index') }}">
-                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            Size List
+                            <iconify-icon icon="mdi:ruler" class="circle-icon text-primary-600"></iconify-icon>
+                            Sizes
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('admin.sizes.create') }}">
-                            <iconify-icon icon="mdi:plus-circle-outline"
-                                class="circle-icon text-primary-600"></iconify-icon>
-                            Add Size
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            {{-- Colors --}}
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:palette-outline" class="menu-icon"></iconify-icon>
-                    <span>Colors</span>
-                </a>
-                <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.colors.index') }}">
-                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            Color List
+                            <iconify-icon icon="mdi:palette-outline"
+                                class="circle-icon text-primary-600"></iconify-icon>
+                            Colors
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.colors.create') }}">
-                            <iconify-icon icon="mdi:plus-circle-outline"
-                                class="circle-icon text-primary-600"></iconify-icon>
-                            Add Color
+                        <a href="{{ route('admin.banners.index') }}">
+                            <iconify-icon icon="mdi:image-outline" class="circle-icon text-primary-600"></iconify-icon>
+                            Banners
                         </a>
                     </li>
                 </ul>
             </li>
 
-            {{-- Orders --}}
-            <li>
-                <a href="{{ route('admin.orders.index') }}">
-                    <iconify-icon icon="mdi:clipboard-list-outline" class="menu-icon"></iconify-icon>
-                    <span>Orders</span>
-                </a>
-            </li>
-            {{-- contacts --}}
-            <li>
-                <a href="{{ route('admin.contacts.index') }}">
-                    <iconify-icon icon="mdi:clipboard-list-outline" class="menu-icon"></iconify-icon>
-                    <span>contacts</span>
-                </a>
-            </li>
-            {{-- wholesales --}}
-            <li>
-                <a href="{{ route('admin.wholesales.index') }}">
-                    <iconify-icon icon="mdi:clipboard-list-outline" class="menu-icon"></iconify-icon>
-                    <span>wholesales</span>
-                </a>
-            </li>
-
-            {{-- Coupons --}}
+            {{-- Sales & Operations Group --}}
             <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:ticket-percent-outline" class="menu-icon"></iconify-icon>
-                    <span>Coupons</span>
+                <a href="javascript:void(0)" aria-expanded="false" aria-controls="sales-submenu">
+                    <iconify-icon icon="mdi:cart-outline" class="menu-icon"></iconify-icon>
+                    <span>Sales & Operations</span>
                 </a>
-                <ul class="sidebar-submenu">
+                <ul class="sidebar-submenu" id="sales-submenu">
+                    <li>
+                        <a href="{{ route('admin.orders.index') }}">
+                            <iconify-icon icon="mdi:clipboard-list-outline"
+                                class="circle-icon text-primary-600"></iconify-icon>
+                            Orders
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.wholesales.index') }}">
+                            <iconify-icon icon="mdi:handshake-outline"
+                                class="circle-icon text-primary-600"></iconify-icon>
+                            Wholesale Requests
+                        </a>
+                    </li>
                     <li>
                         <a href="{{ route('admin.coupons.index') }}">
-                            <iconify-icon icon="ri:list-unordered" class="circle-icon text-primary-600"></iconify-icon>
-                            Coupon List
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.coupons.create') }}">
-                            <iconify-icon icon="mdi:plus-circle-outline"
+                            <iconify-icon icon="mdi:ticket-percent-outline"
                                 class="circle-icon text-primary-600"></iconify-icon>
-                            Add Coupon
+                            Coupons
                         </a>
                     </li>
                 </ul>
             </li>
 
-            {{-- FAQs --}}
+            {{-- System & Support Group --}}
             <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:help-circle-outline" class="menu-icon"></iconify-icon>
-                    <span>FAQs</span>
+                <a href="javascript:void(0)" aria-expanded="false" aria-controls="support-submenu">
+                    <iconify-icon icon="mdi:cog-outline" class="menu-icon"></iconify-icon>
+                    <span>System & Support</span>
                 </a>
-                <ul class="sidebar-submenu">
+                <ul class="sidebar-submenu" id="support-submenu">
+                    <li>
+                        <a href="{{ route('admin.contacts.index') }}">
+                            <iconify-icon icon="mdi:email-outline" class="circle-icon text-primary-600"></iconify-icon>
+                            Contact Messages
+                        </a>
+                    </li>
                     <li>
                         <a href="{{ route('admin.faqs.index') }}">
-                            <iconify-icon icon="ri:list-unordered"
+                            <iconify-icon icon="mdi:help-circle-outline"
                                 class="circle-icon text-primary-600"></iconify-icon>
-                            FAQ List
+                            FAQs
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('admin.faqs.create') }}">
-                            <iconify-icon icon="mdi:plus-circle-outline"
-                                class="circle-icon text-primary-600"></iconify-icon>
-                            Add FAQ
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            {{-- Carts --}}
-            {{-- <li>
-                <a href="{{ route('admin.carts.index') }}">
-                    <iconify-icon icon="mdi:cart-outline" class="menu-icon"></iconify-icon>
-                    <span>Carts</span>
-                </a>
-            </li> --}}
-
-            {{-- Settings --}}
-            <li class="dropdown">
-                <a href="javascript:void(0)">
-                    <iconify-icon icon="mdi:cog-outline" class="menu-icon"></iconify-icon>
-                    <span>Settings</span>
-                </a>
-                <ul class="sidebar-submenu">
                     <li>
                         <a href="{{ route('admin.settings.index') }}">
-                            <iconify-icon icon="mdi:tune-vertical"
-                                class="circle-icon text-primary-600"></iconify-icon>
+                            <iconify-icon icon="mdi:tune-vertical" class="circle-icon text-primary-600"></iconify-icon>
                             General Settings
                         </a>
                     </li>

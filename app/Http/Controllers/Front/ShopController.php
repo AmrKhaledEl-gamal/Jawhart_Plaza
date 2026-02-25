@@ -105,8 +105,8 @@ class ShopController extends Controller
 
         // Get wishlist product IDs for authenticated users
         $wishlistIds = [];
-        if (auth()->check()) {
-            $wishlistIds = \App\Models\Wishlist::where('user_id', auth()->id())->pluck('product_id')->toArray();
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $wishlistIds = \App\Models\Wishlist::where('user_id', \Illuminate\Support\Facades\Auth::id())->pluck('product_id')->toArray();
         }
 
         return view('front.shop.index', compact(
